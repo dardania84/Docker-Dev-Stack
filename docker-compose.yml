@@ -1,0 +1,104 @@
+# Author: Bert Oost <hello@bertoost.com>
+version: "3.3"
+services:
+  nginx:
+    build: stack/nginx
+    container_name: nginx
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.frontend.rule=PathPrefix:/'
+      - 'traefik.frontend.priority=1'
+      - 'traefik.docker.network=webgateway'
+    links:
+      - php56
+      - php71
+    volumes:
+      - ./logs/nginx:/var/log/nginx
+      - ./data/nginx:/etc/nginx/conf.d/custom
+      - ${PROJECTS_DIR:-./projects}:/var/www/html
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.frontend.rule=PathPrefix:/'
+      - 'traefik.frontend.priority=1'
+      - 'traefik.docker.network=webgateway'
+    networks:
+      - default
+      - webgateway
+
+  php56:
+    build: stack/php56
+    container_name: php56
+    volumes:
+      - ./logs/php56:/var/log/php56
+      - ${PROJECTS_DIR:-./projects}:/var/www/html
+      - ./data/composer:/home/php/.composer
+    links:
+      - mysql
+      - postoffice
+    extra_hosts:
+      - xdebug_host:${HOST_IP}
+    env_file:
+      - .env
+
+  php71:
+    build: stack/php71
+    container_name: php71
+    volumes:
+      - ./logs/php71:/var/log/php71
+      - ${PROJECTS_DIR:-./projects}:/var/www/html
+      - ./data/composer:/home/php/.composer
+    links:
+      - mysql
+      - postoffice
+    extra_hosts:
+      - xdebug_host:${HOST_IP}
+    env_file:
+      - .env
+
+  mysql:
+    build: stack/mysql
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_USER=${MYSQL_USERNAME}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+    volumes:
+      - ./logs/mysql:/var/log/mysql
+      - ./data/mysql:/var/lib/mysql:rw
+      - ./stack/mysql/:/stack/mysql:rw
+    networks:
+      - default
+      - development
+
+  postoffice:
+    image: mailhog/mailhog
+    container_name: postoffice
+    ports:
+      - 8025:8025
+      - 25:1025
+    networks:
+      - default
+      - development
+
+  # -------------------------
+  # PORTAINER
+  # -------------------------
+
+  portainer:
+    image: portainer/portainer
+    container_name: portainer
+    command: --no-auth
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+      - './data/portainer:/data'
+    ports:
+      - "8888:9000"
+
+networks:
+  webgateway:
+    external:
+      name: webgateway
+  development:
+    external:
+      name: development

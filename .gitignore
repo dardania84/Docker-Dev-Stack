@@ -7,6 +7,5 @@
 /logs/*
 /.env
 /traefik/.env
-/docker-compose.yml
 
 !.gitkeep
