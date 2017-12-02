@@ -1,0 +1,12 @@
+.idea/
+
+/projects/*
+!projects/phpinfo/index.php
+
+/data/*
+/logs/*
+/.env
+/traefik/.env
+/docker-compose.yml
+
+!.gitkeep
