@@ -3,6 +3,7 @@ services:
   traefik:
     image: traefik:v1.4.1
     container_name: traefik
+    restart: always
     networks:
       - webgateway
     command: --web --docker --docker.domain=${HOST_DOMAIN} --docker.watch=true --docker.exposedbydefault=false --logLevel=DEBUG
