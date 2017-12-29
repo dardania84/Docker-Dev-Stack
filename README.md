@@ -23,6 +23,27 @@ For updating the stack, run;
 sh scripts/update.sh
 ```
 
+## Build images
+
+To build the images, based on the configuration, and overwrite used tags, use the build script, like;
+
+```
+sh scripts/build.sh <path to Dockerfile> [options]
+```
+
+Option    | Description
+--------- | ------------------------------
+`--build` | To trigger building the image
+`--push`  | To trigger pushing the image
+
+__Example usage__
+
+```
+sh scripts/build.sh stack/php71/Dockerfile.fpm --build --push
+```
+
+This will build the image `{username}/php71:fpm`
+
 ## Supported URL routing
 
 All the formats do have multiple domain suffixes. For example; a host could end
