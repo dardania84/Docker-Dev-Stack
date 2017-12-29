@@ -2,16 +2,10 @@
 version: "3.3"
 services:
   nginx:
-    build: stack/nginx
+    image: bertoost/nginx:latest
     container_name: nginx
     restart: always
-    labels:
-      - 'traefik.enable=true'
-      - 'traefik.frontend.rule=PathPrefix:/'
-      - 'traefik.frontend.priority=1'
-      - 'traefik.docker.network=webgateway'
     links:
-      - php56
       - php71
     volumes:
       - ./logs/nginx:/var/log/nginx
@@ -26,35 +20,22 @@ services:
       - default
       - webgateway
 
-  php56:
-    build: stack/php56
-    container_name: php56
-    restart: always
-    volumes:
-      - ./logs/php56:/var/log/php56
-      - ${PROJECTS_DIR:-./projects}:/var/www/html
-      - ./data/composer:/home/php/.composer
-    links:
-      - mysql
-      - postoffice
-    extra_hosts:
-      - xdebug_host:${HOST_IP}
-    env_file:
-      - .env
-
   php71:
-    build: stack/php71
+    image: bertoost/php71:fpm-development
     container_name: php71
     restart: always
     volumes:
       - ./logs/php71:/var/log/php71
-      - ${PROJECTS_DIR:-./projects}:/var/www/html
       - ./data/composer:/home/php/.composer
+      - ${PROJECTS_DIR:-./projects}:/var/www/html
     links:
       - mysql
       - postoffice
     extra_hosts:
-      - xdebug_host:${HOST_IP}
+      - XDEBUG_HOST:${HOST_IP}
+    environment:
+      - BINARY_DIRECTORY=
+      - BLACKFIRE_HOST=${HOST_DOMAIN}
     env_file:
       - .env
 
