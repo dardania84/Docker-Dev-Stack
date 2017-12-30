@@ -9,8 +9,9 @@ RUN adduser \
    --group \
    --disabled-password \
    php
-RUN mkdir -p /var/www/html
-RUN chown php:php /var/www/html
+
+RUN mkdir -p /var/www/html \
+    && chown php:php /var/www/html
 
 # SSMTP config.
 COPY conf.d/ssmtp.conf /etc/ssmtp/ssmtp.conf
@@ -105,7 +106,9 @@ RUN apt-get purge -y --auto-remove \
 
 # Add composer and php scripts for aliases.
 COPY home/ /home/php/
-RUN chmod +x /home/php/composer.sh && chmod +x /home/php/php.sh
+RUN chmod +x /home/php/composer.sh \
+    && chmod +x /home/php/php.sh \
+    && chown php:php /home/php/php.sh /home/php/composer.sh
 
 # php.ini
 COPY conf.d/php.ini /usr/local/etc/php/conf.d/00-php.ini
