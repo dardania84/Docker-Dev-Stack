@@ -1,0 +1,5 @@
+FROM bertoost/nginx
+LABEL maintainer Bert Oost <hello@bertoost.com>
+
+COPY conf.d/dev/php.conf /etc/nginx/conf.d/default.conf
+COPY conf.d/dev/postoffice.conf /etc/nginx/conf.d/
