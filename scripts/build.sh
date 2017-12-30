@@ -18,7 +18,7 @@ while [ "$1" != "" ]; do
             DO_PUSH=true
             ;;
         *)
-            if [[ $PARAM == *"Dockerfile"* ]]; then
+            if [[ $PARAM == *"Dockerfile"* ]] || [[ -d $PARAM ]]; then
                 DOCKERFILE=$PARAM
             else
                 echo "ERROR: unknown parameter \"$PARAM\""
@@ -30,41 +30,66 @@ while [ "$1" != "" ]; do
     shift
 done
 
-if [ ! -f $DOCKERFILE ]; then
-    echo "DockerFile not found!"
-    echo 'Select a correct Dockerfile to build'
-    exit 0
-fi
+# !! DOCKERFILE PARSER FUNCTION !!
+parse_dockerfile()
+{
+    DOCKERFILE=$1
 
-DIR=$(dirname "${DOCKERFILE}")
-cd $DIR
+    DIR=$(dirname "${DOCKERFILE}")
+    cd $DIR
 
-DOCKERFILE_RELATIVE=$(basename "${DOCKERFILE}")
+    DOCKERFILE_RELATIVE=$(basename "${DOCKERFILE}")
 
-IMAGENAME=$(cut -d/ -f2 <<< "${DOCKERFILE}")
-IMAGENAME="bertoost/$IMAGENAME"
+    IMAGENAME=$(cut -d/ -f2 <<< "${DOCKERFILE}")
+    IMAGENAME="bertoost/$IMAGENAME"
 
-TAG=$(cut -d/ -f3 <<< "${DOCKERFILE}")
-TAG=$(echo ${TAG} | sed -e "s/Dockerfile\.//g")
-TAG=$(echo ${TAG} | sed -e "s/\./-/g")
-if [[ "${TAG}" = "Dockerfile" ]]; then
-    TAG="latest"
-fi
+    TAG=$(cut -d/ -f3 <<< "${DOCKERFILE}")
+    TAG=$(echo ${TAG} | sed -e "s/Dockerfile\.//g")
+    TAG=$(echo ${TAG} | sed -e "s/\./-/g")
+    if [[ "${TAG}" = "Dockerfile" ]]; then
+        TAG="latest"
+    fi
 
-echo "Preparing $IMAGENAME:$TAG ..."
+    echo "Preparing $IMAGENAME:$TAG ..."
 
-# REGISTRY:     https://hub.docker.com/
-# IMAGENAME:    bertoost/php71
-# TAG:          fpm / fpm-development
+    if [[ "$DO_BUILD" = true ]]; then
+        docker build -f "${DOCKERFILE_RELATIVE}" -t "${IMAGENAME}:${TAG}" .
+    else
+        echo "Skipped building image..."
+    fi
 
-if [[ "$DO_BUILD" = true ]]; then
-    docker build -f "${DOCKERFILE_RELATIVE}" -t "${IMAGENAME}:${TAG}" .
+    if [[ "$DO_PUSH" = true ]]; then
+        docker push "${IMAGENAME}:${TAG}"
+    else
+        echo "Skipped pushing image..."
+    fi
+
+    echo ""
+    echo "------------------------"
+    echo ""
+}
+
+# When DOCKERFILE is a directory, scan it for all Dockerfile's
+if [[ -d $DOCKERFILE ]]; then
+
+    FILES="$DOCKERFILE/*"
+    for FILE in $FILES
+    do
+        FILEBASE=$(basename $FILE)
+        if [[ $FILEBASE =~ ^Dockerfile.* ]]; then
+
+            read -p "Do you want to parse ${FILEBASE} (Y/n)?" COND
+            if [ "$COND" = "y" ] || [ "$COND" = "" ]; then
+                parse_dockerfile $FILE
+            fi
+        fi
+    done
 else
-    echo "Skipped building image..."
-fi
+    if [ ! -f $DOCKERFILE ]; then
+        echo "DockerFile not found!"
+        echo 'Select a correct Dockerfile to build'
+        exit 0
+    fi
 
-if [[ "$DO_PUSH" = true ]]; then
-    docker push "${IMAGENAME}:${TAG}"
-else
-    echo "Skipped pushing image..."
+    parse_dockerfile $DOCKERFILE
 fi

@@ -42,7 +42,14 @@ __Example usage__
 sh scripts/build.sh stack/php71/Dockerfile.fpm --build --push
 ```
 
-This will build the image `{username}/php71:fpm`
+This will build the image `{username}/php71:fpm`  
+Using a path is possible too;
+
+```
+sh scripts/build.sh stack/php71 --build --push
+```
+
+This will scan the directory for any `Dockerfile*`'s and will ask you to continue or not.
 
 ## Supported URL routing
 
