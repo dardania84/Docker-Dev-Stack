@@ -40,18 +40,16 @@ services:
       - .env
 
   mysql:
-    build: stack/mysql
+    image: bertoost/mysql:latest
     container_name: mysql
     restart: always
     ports:
       - "3306:3306"
     environment:
-      - MYSQL_USER=${MYSQL_USERNAME}
       - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
     volumes:
-      - ./logs/mysql:/var/log/mysql
       - ./data/mysql:/var/lib/mysql:rw
-      - ./stack/mysql/:/stack/mysql:rw
+      - ./logs/mysql:/var/log/mysql
     networks:
       - default
       - development
@@ -66,10 +64,6 @@ services:
     networks:
       - default
       - development
-
-  # -------------------------
-  # PORTAINER
-  # -------------------------
 
   portainer:
     image: portainer/portainer
