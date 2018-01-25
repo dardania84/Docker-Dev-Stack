@@ -5,8 +5,6 @@ services:
     image: bertoost/nginx:dev
     container_name: nginx
     restart: always
-    links:
-      - php71:php
     volumes:
       - ./logs/nginx:/var/log/nginx
       - ./data/nginx:/etc/nginx/conf.d/custom
@@ -16,11 +14,16 @@ services:
       - 'traefik.frontend.rule=PathPrefix:/'
       - 'traefik.frontend.priority=1'
       - 'traefik.docker.network=webgateway'
+    environment:
+      - DEV_HOST_DOMAIN=${DEV_HOST_DOMAIN}
+      - DEV_HOST_IP=${DEV_HOST_IP}
+    env_file:
+      - .env
     networks:
       - default
       - webgateway
 
-  php71:
+  php:
     image: bertoost/php71:fpm-development
     container_name: php71
     restart: always
@@ -32,10 +35,10 @@ services:
       - mysql
       - postoffice
     extra_hosts:
-      - XDEBUG_HOST:${HOST_IP}
+      - XDEBUG_HOST:${DEV_HOST_IP}
     environment:
       - BINARY_DIRECTORY=
-      - BLACKFIRE_HOST=${HOST_DOMAIN}
+      - BLACKFIRE_HOST=${DEV_HOST_DOMAIN}
     env_file:
       - .env
 
