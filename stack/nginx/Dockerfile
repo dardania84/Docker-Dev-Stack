@@ -1,5 +1,8 @@
 FROM nginx:stable-alpine
-LABEL maintainer Bert Oost <hello@bertoost.com>
+LABEL maintainer="Bert Oost <hello@bertoost.com>"
+
+RUN apk add --no-cache bash gawk sed grep bc coreutils \
+    && rm -rf /var/cache/apk/*
 
 RUN mkdir /etc/nginx/conf.d/custom
 
@@ -10,4 +13,10 @@ COPY defaults/overall_params.conf /etc/nginx/overall_params.conf
 COPY defaults/overall_ssl.conf /etc/nginx/overall_ssl.conf
 
 # Copy default NginX config
-COPY conf.d/default.conf /etc/nginx/conf.d/default.conf
+COPY conf.d/default.conf /etc/nginx/conf.d/default.placeholder
+
+# Copy entrypoint file and make it executable
+COPY build/entrypoint.sh /usr/src/docker-entrypoint.sh
+RUN chmod +x /usr/src/docker-entrypoint.sh
+
+ENTRYPOINT [ "bash", "/usr/src/docker-entrypoint.sh" ]
