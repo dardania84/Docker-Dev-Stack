@@ -23,5 +23,5 @@ The stack is also including an image of Portainer. A useful web based tool to vi
 Open portainer easily (no authorization required) via the URL;
 
 ```
-http://{domain}:8888
+http://portainer.{domain}
 ```

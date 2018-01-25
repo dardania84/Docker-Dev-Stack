@@ -2,6 +2,8 @@
 
 Copy the `default.env` to `.env` and change the contents to your need.
 
+__Note:__ You can also pass some of the variables to your environment if you want them globally available in all your projects. For example the `DEV_HOST_DOMAIN` is a good one to set global.
+
 Just simply run the next install command and follow the instructions.
 
 ```terminal

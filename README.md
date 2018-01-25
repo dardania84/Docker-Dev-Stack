@@ -33,4 +33,5 @@ Before you use these dev stack, please read the following topics.
 - [Installation](docs/Installation.md)
 - [Traefik usage](docs/Traefik.md)
 - [MySQL, Mailhog & Portainer](docs/Others.md)
+- [Custom NginX Config](docs/CustomNginx.md)
 - [Building images](docs/BuildImages.md)
