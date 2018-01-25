@@ -22,13 +22,24 @@ while [ "$1" != "" ]; do
                 DOCKERFILE=$PARAM
             else
                 echo "ERROR: unknown parameter \"$PARAM\""
-                usage
                 exit 1
             fi
             ;;
     esac
     shift
 done
+
+if [ "$DOCKERFILE" = "" ]; then
+  echo ""
+  echo "No Dockerfile or path given! [required]"
+  exit 1
+fi
+
+if [ "$DO_BUILD" = false ] && [ "$DO_PUSH" = false ]; then
+  echo ""
+  echo "At least one action is required! (--build | --push)"
+  exit 1
+fi
 
 # !! DOCKERFILE PARSER FUNCTION !!
 parse_dockerfile()
@@ -54,14 +65,10 @@ parse_dockerfile()
 
     if [[ "$DO_BUILD" = true ]]; then
         docker build -f "${DOCKERFILE_RELATIVE}" -t "${IMAGENAME}:${TAG}" .
-    else
-        echo "Skipped building image..."
     fi
 
     if [[ "$DO_PUSH" = true ]]; then
         docker push "${IMAGENAME}:${TAG}"
-    else
-        echo "Skipped pushing image..."
     fi
 
     echo ""
