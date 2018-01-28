@@ -1,3 +1,5 @@
+sudo: required
+
 language: ruby
 
 services:
@@ -5,13 +7,13 @@ services:
 
 after_success:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
-    docker login -e $DOCKER_EMAIL -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-    ./scripts/build.sh stack/mysql --force --push
-    ./scripts/build.sh stack/nginx --force --push
-    ./scripts/build.sh stack/php71 --force --push
+      docker login -e $DOCKER_EMAIL -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+      ./scripts/build.sh -f stack/mysql --force --push
+      ./scripts/build.sh -f stack/nginx --force --push
+      ./scripts/build.sh -f stack/php71 --force --push
     fi
 
 script:
-  - ./scripts/build.sh stack/mysql --force --build
-  - ./scripts/build.sh stack/nginx --force --build
-  - ./scripts/build.sh stack/php71 --force --build
+  - ./scripts/build.sh -f stack/mysql --force --build
+  - ./scripts/build.sh -f stack/nginx --force --build
+  - ./scripts/build.sh -f stack/php71 --force --build
