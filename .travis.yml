@@ -6,9 +6,11 @@ services:
   - docker
 
 script:
-  - bash ./scripts/build.sh stack/mysql --force --build
-  - bash ./scripts/build.sh stack/nginx --force --build
-  - bash ./scripts/build.sh stack/php71 --force --build
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then
+      bash ./scripts/build.sh stack/mysql --force --build
+      bash ./scripts/build.sh stack/nginx --force --build
+      bash ./scripts/build.sh stack/php71 --force --build
+    fi
 
 after_success:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
