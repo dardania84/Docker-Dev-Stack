@@ -72,6 +72,8 @@ parse_dockerfile()
     echo "Preparing $IMAGENAME:$TAG ..."
 
     if [ "$DO_BUILD" = true ]; then
+        # pull before build to grab some cache
+        docker pull "${IMAGENAME}:${TAG}"
         docker build -f "${DOCKERFILE_RELATIVE}" -t "${IMAGENAME}:${TAG}" .
     fi
 
