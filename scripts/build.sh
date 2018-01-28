@@ -3,6 +3,7 @@
 DOCKERFILE=""
 DO_BUILD=false
 DO_PUSH=false
+DO_FORCED=false
 
 while [ "$1" != "" ]; do
     PARAM=`echo $1 | awk -F= '{print $1}'`
@@ -16,6 +17,9 @@ while [ "$1" != "" ]; do
             ;;
         --push)
             DO_PUSH=true
+            ;;
+        --force)
+            DO_FORCED=true
             ;;
         *)
             if [[ $PARAM == *"Dockerfile"* ]] || [[ -d $PARAM ]]; then
@@ -85,9 +89,13 @@ if [[ -d $DOCKERFILE ]]; then
         FILEBASE=$(basename $FILE)
         if [[ $FILEBASE =~ ^Dockerfile.* ]]; then
 
-            read -p "Do you want to parse ${FILEBASE} (Y/n)?" COND
-            if [ "$COND" = "y" ] || [ "$COND" = "" ]; then
+            if [[ "$DO_FORCED" = true ]]; then
                 parse_dockerfile $FILE
+            else
+                read -p "Do you want to parse ${FILEBASE} (Y/n)?" COND
+                if [ "$COND" = "y" ] || [ "$COND" = "" ]; then
+                    parse_dockerfile $FILE
+                fi
             fi
         fi
     done
