@@ -22,7 +22,7 @@ while [ "$1" != "" ]; do
             DO_FORCED=true
             ;;
         *)
-            if [[ $PARAM == *"Dockerfile"* ]] || [[ -d $PARAM ]]; then
+            if [ $PARAM == *"Dockerfile"* ] || [ -d $PARAM ]; then
                 DOCKERFILE=$PARAM
             else
                 echo "ERROR: unknown parameter \"$PARAM\""
@@ -67,11 +67,11 @@ parse_dockerfile()
 
     echo "Preparing $IMAGENAME:$TAG ..."
 
-    if [[ "$DO_BUILD" = true ]]; then
+    if [ "$DO_BUILD" = true ]; then
         docker build -f "${DOCKERFILE_RELATIVE}" -t "${IMAGENAME}:${TAG}" .
     fi
 
-    if [[ "$DO_PUSH" = true ]]; then
+    if [ "$DO_PUSH" = true ]; then
         docker push "${IMAGENAME}:${TAG}"
     fi
 
@@ -81,15 +81,15 @@ parse_dockerfile()
 }
 
 # When DOCKERFILE is a directory, scan it for all Dockerfile's
-if [[ -d $DOCKERFILE ]]; then
+if [ -d $DOCKERFILE ]; then
 
     FILES="$DOCKERFILE/*"
     for FILE in $FILES
     do
         FILEBASE=$(basename $FILE)
-        if [[ $FILEBASE =~ ^Dockerfile.* ]]; then
+        if [ $FILEBASE =~ ^Dockerfile.* ]; then
 
-            if [[ "$DO_FORCED" = true ]]; then
+            if [ "$DO_FORCED" = true ]; then
                 parse_dockerfile $FILE
             else
                 read -p "Do you want to parse ${FILEBASE} (Y/n)?" COND
