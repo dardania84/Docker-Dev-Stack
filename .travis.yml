@@ -1,19 +1,19 @@
 sudo: required
 
-language: ruby
+language: bash
 
 services:
   - docker
 
+script:
+  - bash ./scripts/build.sh stack/mysql --force --build
+  - bash ./scripts/build.sh stack/nginx --force --build
+  - bash ./scripts/build.sh stack/php71 --force --build
+
 after_success:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
       docker login -e $DOCKER_EMAIL -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-      ./scripts/build.sh stack/mysql --force --push
-      ./scripts/build.sh stack/nginx --force --push
-      ./scripts/build.sh stack/php71 --force --push
+      bash ./scripts/build.sh stack/mysql --force --push
+      bash ./scripts/build.sh stack/nginx --force --push
+      bash ./scripts/build.sh stack/php71 --force --push
     fi
-
-script:
-  - ./scripts/build.sh stack/mysql --force --build
-  - ./scripts/build.sh stack/nginx --force --build
-  - ./scripts/build.sh stack/php71 --force --build

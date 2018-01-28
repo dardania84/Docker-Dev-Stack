@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 DOCKERFILE=""
 DO_BUILD=false
