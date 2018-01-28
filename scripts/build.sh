@@ -1,9 +1,13 @@
-#!/bin/sh
+#!/bin/bash
 
 DOCKERFILE=""
 DO_BUILD=false
 DO_PUSH=false
 DO_FORCED=false
+
+if [ "$DOCKER_USERNAME" = "" ]; then
+    DOCKER_USERNAME=bertoost
+fi
 
 while [ "$1" != "" ]; do
     PARAM=`echo $1 | awk -F= '{print $1}'`
@@ -22,7 +26,7 @@ while [ "$1" != "" ]; do
             DO_FORCED=true
             ;;
         *)
-            if [ $PARAM == *"Dockerfile"* ] || [ -d $PARAM ]; then
+            if [[ "$PARAM" == *"Dockerfile"* ]] || [ -d "$PARAM" ]; then
                 DOCKERFILE=$PARAM
             else
                 echo "ERROR: unknown parameter \"$PARAM\""
@@ -56,7 +60,7 @@ parse_dockerfile()
     DOCKERFILE_RELATIVE=$(basename "${DOCKERFILE}")
 
     IMAGENAME=$(cut -d/ -f2 <<< "${DOCKERFILE}")
-    IMAGENAME="bertoost/$IMAGENAME"
+    IMAGENAME="$DOCKER_USERNAME/$IMAGENAME"
 
     TAG=$(cut -d/ -f3 <<< "${DOCKERFILE}")
     TAG=$(echo ${TAG} | sed -e "s/Dockerfile\.//g")
@@ -87,7 +91,7 @@ if [ -d $DOCKERFILE ]; then
     for FILE in $FILES
     do
         FILEBASE=$(basename $FILE)
-        if [ $FILEBASE =~ ^Dockerfile.* ]; then
+        if [[ $FILEBASE == Dockerfile* ]]; then
 
             if [ "$DO_FORCED" = true ]; then
                 parse_dockerfile $FILE

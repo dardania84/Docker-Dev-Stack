@@ -1,5 +1,7 @@
 # Docker Dev Stack
 
+[![Build Status](https://travis-ci.org/bertoost/Docker-Dev-Stack.svg?branch=master)](https://travis-ci.org/bertoost/Docker-Dev-Stack)
+
 The purpose of this development stack with Docker images is to help setting up a local environment for development of PHP/MySQL projects. It's not meant to be used in production.
 
 Also a special configured images ar available for [Symfony framework](https://www.symfony.com) and [Craft CMS](https://www.craftcms.com) projects. See my [Docker hub](https://hub.docker.com/r/bertoost) images for the right tags to use.
