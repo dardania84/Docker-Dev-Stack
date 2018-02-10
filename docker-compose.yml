@@ -95,8 +95,14 @@ services:
     volumes:
       - '/var/run/docker.sock:/var/run/docker.sock'
       - './data/portainer:/data'
-    ports:
-      - "8888:9000"
+    labels:
+      traefik.enable: 'true'
+      traefik.port: '9000'
+      traefik.frontend.rule: 'Host:portainer.${DEV_HOST_DOMAIN}'
+      traefik.docker.network: 'webgateway'
+    networks:
+      - default
+      - webgateway
 
 networks:
   webgateway:
