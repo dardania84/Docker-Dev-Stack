@@ -8,6 +8,14 @@ Træfik (pronounced like traffic) is a modern HTTP reverse proxy and load balanc
 
 Please read the [official docs](https://docs.traefik.io/basics/) if you don't know what frontends and backends of Traefik are.
 
+## Open Traefik in your browser
+
+Traefik can be reached via the next domain
+
+```terminal
+http://traefik.local
+```
+
 ## Using Traefik on per-project basis
 
 __Note:__ Below you will see some environment variables. Please refer to the [installation](Installation.md) guide how to configure these variables.

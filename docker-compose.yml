@@ -1,6 +1,25 @@
 # Author: Bert Oost <hello@bertoost.com>
 version: "3.3"
 services:
+  traefik:
+    image: traefik:v1.4.1
+    container_name: traefik
+    restart: always
+    command: "--web --docker --docker.domain=${DEV_HOST_DOMAIN} --docker.watch=true --docker.exposedbydefault=false --logLevel=DEBUG"
+    ports:
+      - "80:80"
+      - "443:443"
+    labels:
+      traefik.enable: 'true'
+      traefik.port: '8080'
+      traefik.frontend.rule: 'Host:traefik.${DEV_HOST_DOMAIN}'
+      traefik.docker.network: 'webgateway'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /dev/null:/traefik.toml
+    networks:
+      - webgateway
+
   nginx:
     image: bertoost/nginx:dev
     container_name: nginx
@@ -8,15 +27,15 @@ services:
     volumes:
       - ./logs/nginx:/var/log/nginx
       - ./data/nginx:/etc/nginx/conf.d/custom
-      - ${PROJECTS_DIR:-./projects}:/var/www/html
+      - ${PROJECTS_DIR-./projects}:/var/www/html
     labels:
-      - 'traefik.enable=true'
-      - 'traefik.frontend.rule=PathPrefix:/'
-      - 'traefik.frontend.priority=1'
-      - 'traefik.docker.network=webgateway'
+      traefik.enable: 'true'
+      traefik.frontend.rule: 'PathPrefix:/'
+      traefik.frontend.priority: '1'
+      traefik.docker.network: 'webgateway'
     environment:
-      - DEV_HOST_DOMAIN=${DEV_HOST_DOMAIN}
-      - DEV_HOST_IP=${DEV_HOST_IP}
+      DEV_HOST_DOMAIN: ${DEV_HOST_DOMAIN}
+      DEV_HOST_IP: ${DEV_HOST_IP}
     env_file:
       - .env
     networks:
@@ -30,15 +49,15 @@ services:
     volumes:
       - ./logs/php71:/var/log/php71
       - ./data/composer:/home/php/.composer
-      - ${PROJECTS_DIR:-./projects}:/var/www/html
+      - ${PROJECTS_DIR-./projects}:/var/www/html
     links:
       - mysql
       - postoffice
     extra_hosts:
-      - XDEBUG_HOST:${DEV_HOST_IP}
+      XDEBUG_HOST: ${DEV_HOST_IP}
     environment:
-      - BINARY_DIRECTORY=
-      - BLACKFIRE_HOST=${DEV_HOST_DOMAIN}
+      BINARY_DIRECTORY: ''
+      BLACKFIRE_HOST: ${DEV_HOST_DOMAIN}
     env_file:
       - .env
 
@@ -49,7 +68,7 @@ services:
     ports:
       - "3306:3306"
     environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - ./data/mysql:/var/lib/mysql:rw
       - ./logs/mysql:/var/log/mysql
@@ -62,8 +81,8 @@ services:
     container_name: postoffice
     restart: always
     ports:
-      - 8025:8025
-      - 25:1025
+      - '8025:8025'
+      - '25:1025'
     networks:
       - default
       - development

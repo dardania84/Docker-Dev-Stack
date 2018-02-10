@@ -12,8 +12,5 @@ fi
 docker network create webgateway
 docker network create development
 
-# Up Traefik for local development
-docker-compose -f traefik/docker-compose.yml up -d
-
 # Up dev-stack
 docker-compose up -d
