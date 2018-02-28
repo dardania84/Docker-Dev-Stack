@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-options=$(ls -1 /usr/local/lib/php/extensions/no-debug-non-zts-20160303| \
+options=$(ls -1 /usr/local/lib/php/extensions/no-debug-non-zts-20170718| \
 
     grep --invert-match xdebug| \
 
