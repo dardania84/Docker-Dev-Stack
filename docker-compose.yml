@@ -42,7 +42,7 @@ services:
       - default
       - webgateway
 
-  php:
+  php71:
     image: bertoost/php71:fpm-development
     container_name: php71
     restart: always
@@ -81,11 +81,15 @@ services:
     container_name: postoffice
     restart: always
     ports:
-      - '8025:8025'
       - '25:1025'
+    labels:
+      traefik.enable: 'true'
+      traefik.port: '8025'
+      traefik.frontend.rule: 'Host:postoffice.${DEV_HOST_DOMAIN}'
+      traefik.docker.network: 'webgateway'
     networks:
       - default
-      - development
+      - webgateway
 
   portainer:
     image: portainer/portainer
