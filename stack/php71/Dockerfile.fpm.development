@@ -1,5 +1,6 @@
 FROM bertoost/php71:fpm
-LABEL maintainer Bert Oost <hello@bertoost.com>
+
+LABEL maintainer="Bert Oost <hello@bertoost.com>"
 
 USER root
 

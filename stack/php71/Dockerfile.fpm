@@ -1,5 +1,6 @@
-FROM php:7.1.12-fpm
-LABEL maintainer Bert Oost <hello@bertoost.com>
+FROM php:7.1.14-fpm
+
+LABEL maintainer="Bert Oost <hello@bertoost.com>"
 
 # Create docker PHP user.
 RUN adduser \
