@@ -23,67 +23,12 @@ __Note:__ Below you will see some environment variables. Please refer to the [in
 For example, let's say we have a Symfony project we want to run;
 
 1. Add a `docker-compose.yml` in the root of your project.
-2. Configure the services you have to use, like this;
+2. Configure the services you have to use, like one of the examples below
+3. Up your project by running `docker-compose up -d`
 
-```yaml
-version: "3.3"
-services:
-  nginx:
-    image: bertoost/nginx:symfony-development
-    restart: always
-    volumes:
-      # Link project root to /var/www/html directory inside the container
-      - ".:/var/www/html:rw"
-    labels:
-      traefik.enable: 'true'
-      traefik.port: '80'
-      # Tell Traefik which domain should be mapped
-      traefik.frontend.rule: 'Host:my-symfony-project.local'
-      # You can also use environment variables here (or a .env file)
-      # traefik.frontend.rule: 'Host:my-symfony-project.{$DEV_HOST_DOMAIN}'
-      traefik.docker.network: 'webgateway'
-    networks:
-      - default
-      - webgateway
-
-  php:
-    image: bertoost/php71:fpm-development
-    restart: always
-    environment:
-      BINARY_DIRECTORY: 'bin/'
-      CURRENT_ENV: ${DEV_CURRENT_ENV-development}
-      XDEBUG_HOST: ${DEV_HOST_IP}
-      BLACKFIRE_HOST: ${DEV_HOST_DOMAIN}
-      BLACKFIRE_SERVER_ID: ${DEV_BLACKFIRE_SERVER_ID-''}
-      BLACKFIRE_SERVER_TOKEN: ${DEV_BLACKFIRE_SERVER_TOKEN-''}
-    volumes:
-      # Link project root to /var/www/html directory inside the container
-      - './:/var/www/html:rw'
-      - '${DEV_COMPOSER_DATA-~/.composer}:/home/php/.composer'
-      - '${DEV_SSH_PATH-~/.ssh}:/home/php/.ssh'
-    external_links:
-      - ${DEV_MYSQL_CONTAINERNAME-mysql}:mysql
-      - ${DEV_MAIL_CONTAINERNAME-postoffice}:mail.docker.local
-    networks:
-      - default
-      - development
-
-  # Add more services here if your project needs it
-
-networks:
-  webgateway:
-    external:
-      name: webgateway
-  development:
-    external:
-      name: development
-```
-
-3. Easily up your project
-
-```terminal
-$ docker-compose up -d
-```
+- [Symfony example file](examples/DcSymfony.md)
+- [Craft CMS example file](examples/DcCraft.md)
+- [MODX CMS example file](examples/DcModx.md)
 
 ## Auto-added binary files
 

@@ -8,12 +8,12 @@ The purpose of this development stack with Docker images is to help setting up a
 
 Special NginX images are provided for usage in different systems;
 
-System                                       | Docker Image Tag(s)                | Index
--------------------------------------------- | ---------------------------------- | -----
-[Symfony framework](https://www.symfony.com) | bertoost/nginx:symfony-development | app_dev.php
+System                                       | Docker Image Tag(s)                | Index       | Example usage
+-------------------------------------------- | ---------------------------------- | ----------- | -------------
+[Symfony framework](https://www.symfony.com) | bertoost/nginx:symfony-development | app_dev.php | [Click here](docs/examples/DcSymfony.md)
 &nbsp;                                       | bertoost/nginx:symfony             | app.php
-[Craft CMS](https://www.craftcms.com)        | bertoost/nginx:craft               | index.php
-[MODX CMS](https://www.modx.com)             | bertoost/nginx:modx                | index.php
+[Craft CMS](https://www.craftcms.com)        | bertoost/nginx:craft               | index.php   | [Click here](docs/examples/DcCraft.md)
+[MODX CMS](https://www.modx.com)             | bertoost/nginx:modx                | index.php   | [Click here](docs/examples/DcModx.md)
 
 The corresponding NginX image tags could be found here on [Docker hub](https://hub.docker.com/r/bertoost).
 
@@ -22,10 +22,10 @@ The corresponding NginX image tags could be found here on [Docker hub](https://h
 The stack contains a setup for the next Docker services;
 
 - NginX
-  - Base PHP7.1 projects support
+  - Base PHP projects support
   - Symfony configuration (not with tested v4.0 yet)
   - Craft CMS projects
-- PHP 7.1.x (FPM)
+- PHP 7.1.x / 7.2.x (FPM)
   - Libraries included:
     - Locales: en_US and nl_NL supported (currently)
     - ImageMagic
