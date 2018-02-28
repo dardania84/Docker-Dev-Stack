@@ -1,5 +1,6 @@
 #!/bin/bash
 
+EXECUTEDIR=$(pwd)
 DOCKERFILE=""
 DO_BUILD=false
 DO_PUSH=false
@@ -80,6 +81,8 @@ parse_dockerfile()
     if [ "$DO_PUSH" = true ]; then
         docker push "${IMAGENAME}:${TAG}"
     fi
+
+    cd $EXECUTEDIR
 
     echo ""
     echo "------------------------"

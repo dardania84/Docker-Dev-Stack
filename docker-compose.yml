@@ -42,7 +42,7 @@ services:
       - default
       - webgateway
 
-  php:
+  php71:
     image: bertoost/php71:fpm-development
     container_name: php71
     restart: always
@@ -56,7 +56,24 @@ services:
     extra_hosts:
       XDEBUG_HOST: ${DEV_HOST_IP}
     environment:
-      BINARY_DIRECTORY: ''
+      BLACKFIRE_HOST: ${DEV_HOST_DOMAIN}
+    env_file:
+      - .env
+
+  php72:
+    image: bertoost/php72:fpm-development
+    container_name: php72
+    restart: always
+    volumes:
+      - ./logs/php72:/var/log/php72
+      - ./data/composer:/home/php/.composer
+      - ${PROJECTS_DIR-./projects}:/var/www/html
+    links:
+      - mysql
+      - postoffice
+    extra_hosts:
+      XDEBUG_HOST: ${DEV_HOST_IP}
+    environment:
       BLACKFIRE_HOST: ${DEV_HOST_DOMAIN}
     env_file:
       - .env
@@ -81,11 +98,15 @@ services:
     container_name: postoffice
     restart: always
     ports:
-      - '8025:8025'
       - '25:1025'
+    labels:
+      traefik.enable: 'true'
+      traefik.port: '8025'
+      traefik.frontend.rule: 'Host:postoffice.${DEV_HOST_DOMAIN}'
+      traefik.docker.network: 'webgateway'
     networks:
       - default
-      - development
+      - webgateway
 
   portainer:
     image: portainer/portainer
