@@ -25,6 +25,7 @@ The stack contains a setup for the next Docker services;
   - Base PHP projects support
   - Symfony configuration (not with tested v4.0 yet)
   - Craft CMS projects
+  - MODX CMS projects
 - PHP 7.1.x / 7.2.x (FPM)
   - Libraries included:
     - Locales: en_US and nl_NL supported (currently)
@@ -51,6 +52,7 @@ Before you use these dev stack, please read the following topics.
   - [Per project basis](docs/Traefik.md#using-traefik-on-per-project-basis)
   - [Auto-added binary files](docs/Traefik.md#auto-added-binary-files)
 - [MySQL, Mailhog & Portainer](docs/Others.md)
+- [Dev Stack Fallback setup](docs/fallback/Setup.md)
 - [Custom NginX Config](docs/CustomNginx.md)
   - [Configuration folder](docs/CustomNginx.md#configuration-folder)
   - [Environment variables](docs/CustomNginx.md#using-environment-variables)
