@@ -47,4 +47,6 @@ COPY conf.d/ssmtp.development.conf /etc/ssmtp/ssmtp.conf
 
 USER php
 
+ENV BINARY_DIRECTORY ""
+
 ENTRYPOINT ["/home/php/entrypoint.sh"]
