@@ -56,7 +56,24 @@ services:
     extra_hosts:
       XDEBUG_HOST: ${DEV_HOST_IP}
     environment:
-      BINARY_DIRECTORY: ''
+      BLACKFIRE_HOST: ${DEV_HOST_DOMAIN}
+    env_file:
+      - .env
+
+  php72:
+    image: bertoost/php72:fpm-development
+    container_name: php72
+    restart: always
+    volumes:
+      - ./logs/php72:/var/log/php72
+      - ./data/composer:/home/php/.composer
+      - ${PROJECTS_DIR-./projects}:/var/www/html
+    links:
+      - mysql
+      - postoffice
+    extra_hosts:
+      XDEBUG_HOST: ${DEV_HOST_IP}
+    environment:
       BLACKFIRE_HOST: ${DEV_HOST_DOMAIN}
     env_file:
       - .env
