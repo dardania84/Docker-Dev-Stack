@@ -33,7 +33,6 @@ services:
     environment:
       BINARY_DIRECTORY: 'bin/'
       CURRENT_ENV: ${DEV_CURRENT_ENV-development}
-      XDEBUG_HOST: ${DEV_HOST_IP}
       BLACKFIRE_HOST: ${DEV_HOST_DOMAIN}
       BLACKFIRE_SERVER_ID: ${DEV_BLACKFIRE_SERVER_ID-''}
       BLACKFIRE_SERVER_TOKEN: ${DEV_BLACKFIRE_SERVER_TOKEN-''}
@@ -43,6 +42,8 @@ services:
     external_links:
       - ${DEV_MYSQL_CONTAINERNAME-mysql}:mysql
       - ${DEV_MAIL_CONTAINERNAME-postoffice}:mail.docker.local
+    extra_hosts:
+      XDEBUG_HOST: ${DEV_HOST_IP}
     networks:
       - default
       - development
