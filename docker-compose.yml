@@ -53,9 +53,8 @@ services:
     links:
       - mysql
       - postoffice
-    extra_hosts:
-      XDEBUG_HOST: ${DEV_HOST_IP}
     environment:
+      XDEBUG_HOST: ${DEV_HOST_DOMAIN}
       BLACKFIRE_HOST: ${DEV_HOST_DOMAIN}
     env_file:
       - .env
@@ -71,9 +70,8 @@ services:
     links:
       - mysql
       - postoffice
-    extra_hosts:
-      XDEBUG_HOST: ${DEV_HOST_IP}
     environment:
+      XDEBUG_HOST: ${DEV_HOST_DOMAIN}
       BLACKFIRE_HOST: ${DEV_HOST_DOMAIN}
     env_file:
       - .env
