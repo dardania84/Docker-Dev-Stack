@@ -10,6 +10,8 @@ services:
   nginx:
     image: bertoost/nginx:modx
     restart: always
+    links:
+      - php:php
     volumes:
       - ".:/var/www/html:rw"
     labels:
@@ -21,7 +23,7 @@ services:
       # traefik.frontend.rule: 'Host:my-modx-project.${DEV_HOST_DOMAIN}'
       traefik.docker.network: 'webgateway'
     networks:
-      - default
+      - development
       - webgateway
 
   php:
@@ -44,7 +46,6 @@ services:
       - ${DEV_MYSQL_CONTAINERNAME-mysql}:mysql
       - ${DEV_MAIL_CONTAINERNAME-postoffice}:mail.docker.local
     networks:
-      - default
       - development
 
   # Add more services here if your project needs it

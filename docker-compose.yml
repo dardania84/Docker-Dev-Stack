@@ -24,6 +24,8 @@ services:
     image: bertoost/nginx:dev
     container_name: nginx
     restart: always
+    links:
+      - php71:php
     volumes:
       - ./logs/nginx:/var/log/nginx
       - ./data/nginx:/etc/nginx/conf.d/custom
@@ -39,7 +41,7 @@ services:
     env_file:
       - .env
     networks:
-      - default
+      - development
       - webgateway
 
   php71:
@@ -58,6 +60,8 @@ services:
       BLACKFIRE_HOST: ${DEV_HOST_DOMAIN}
     env_file:
       - .env
+    networks:
+      - development
 
   php72:
     image: bertoost/php72:fpm-development
@@ -75,6 +79,8 @@ services:
       BLACKFIRE_HOST: ${DEV_HOST_DOMAIN}
     env_file:
       - .env
+    networks:
+      - development
 
   mysql:
     image: bertoost/mysql:latest
@@ -88,7 +94,6 @@ services:
       - ./data/mysql:/var/lib/mysql:rw
       - ./logs/mysql:/var/log/mysql
     networks:
-      - default
       - development
 
   postoffice:
@@ -103,7 +108,6 @@ services:
       traefik.frontend.rule: 'Host:postoffice.${DEV_HOST_DOMAIN}'
       traefik.docker.network: 'webgateway'
     networks:
-      - default
       - development
       - webgateway
 
@@ -121,7 +125,7 @@ services:
       traefik.frontend.rule: 'Host:portainer.${DEV_HOST_DOMAIN}'
       traefik.docker.network: 'webgateway'
     networks:
-      - default
+      - development
       - webgateway
 
 networks:
