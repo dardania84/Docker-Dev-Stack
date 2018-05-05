@@ -33,7 +33,6 @@ services:
     image: bertoost/php72:fpm-development
     restart: always
     environment:
-      BINARY_DIRECTORY: 'bin/'
       CURRENT_ENV: ${DEV_CURRENT_ENV-development}
       XDEBUG_HOST: ${DEV_HOST_DOMAIN}
       BLACKFIRE_HOST: ${DEV_HOST_DOMAIN}

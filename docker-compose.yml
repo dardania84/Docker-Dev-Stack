@@ -57,6 +57,7 @@ services:
       - mysql
       - ${DEV_MAIL_CONTAINERNAME-postoffice}:mail.docker.local
     environment:
+      BINARY_DIRECTORY: ''
       XDEBUG_HOST: ${DEV_HOST_DOMAIN}
       BLACKFIRE_HOST: ${DEV_HOST_DOMAIN}
     env_file:
@@ -76,6 +77,7 @@ services:
       - mysql
       - ${DEV_MAIL_CONTAINERNAME-postoffice}:mail.docker.local
     environment:
+      BINARY_DIRECTORY: ''
       XDEBUG_HOST: ${DEV_HOST_DOMAIN}
       BLACKFIRE_HOST: ${DEV_HOST_DOMAIN}
     env_file:
