@@ -2,7 +2,7 @@
 version: "3.3"
 services:
   traefik:
-    image: traefik:v1.4.1
+    image: traefik:v1.6.0
     container_name: traefik
     restart: always
     command: "--web --docker --docker.domain=${DEV_HOST_DOMAIN} --docker.watch=true --docker.exposedbydefault=false --logLevel=DEBUG"
@@ -26,6 +26,7 @@ services:
     restart: always
     links:
       - php71:php
+      - php72:php72
     volumes:
       - ./logs/nginx:/var/log/nginx
       - ./data/nginx:/etc/nginx/conf.d/custom
