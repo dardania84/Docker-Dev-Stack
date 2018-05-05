@@ -101,6 +101,9 @@ services:
     image: mailhog/mailhog
     container_name: postoffice
     restart: always
+    command: ["-storage=maildir", "-maildir-path=/maildir"]
+    volumes:
+      - ./data/mail:/maildir
     ports:
       - '25:1025'
     labels:
