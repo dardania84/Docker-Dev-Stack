@@ -44,6 +44,7 @@ RUN apt-get update \
         openssh-client \
         pdftk \
         apt-transport-https \
+        mysql-client \
     && rm -rf /var/lib/apt/lists/*
 
 RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
