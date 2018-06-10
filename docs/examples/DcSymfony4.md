@@ -1,4 +1,4 @@
-# Symfony 2 & 3 docker-compose example
+# Symfony 4 docker-compose example
 
 Below an exmaple of the `docker-compose.yml` file using the Symfony (development) NginX image.
 
@@ -8,7 +8,7 @@ Put this file in the root of your project (checkout);
 version: "3.3"
 services:
   nginx:
-    image: bertoost/nginx:symfony-development
+    image: bertoost/nginx:symfony
     restart: always
     links:
       - php:php
@@ -38,6 +38,9 @@ services:
       BLACKFIRE_HOST: ${DEV_HOST_DOMAIN}
       BLACKFIRE_SERVER_ID: ${DEV_BLACKFIRE_SERVER_ID-''}
       BLACKFIRE_SERVER_TOKEN: ${DEV_BLACKFIRE_SERVER_TOKEN-''}
+      # Symfony environment
+      APP_ENV: 'dev'
+      APP_SECRET: 'ThisIsNotSoSecretChangeIt'
     volumes:
       - './:/var/www/html:rw'
       - '${DEV_COMPOSER_DATA-~/.composer}:/home/php/.composer'

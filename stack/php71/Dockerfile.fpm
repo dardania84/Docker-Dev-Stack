@@ -1,4 +1,4 @@
-FROM php:7.1.17-fpm
+FROM php:7.1.18-fpm
 
 LABEL maintainer="Bert Oost <hello@bertoost.com>"
 
@@ -44,6 +44,7 @@ RUN apt-get update \
         openssh-client \
         pdftk \
         apt-transport-https \
+        mysql-client \
     && rm -rf /var/lib/apt/lists/*
 
 RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
@@ -78,10 +79,10 @@ RUN echo 'en_US ISO-8859-1\n\
 
 RUN ln -s /usr/lib/x86_64-linux-gnu/ImageMagick-6.8.9/bin-Q16/MagickWand-config /usr/bin/
 
-RUN wget https://download.libsodium.org/libsodium/releases/libsodium-1.0.13.tar.gz --output-document=/tmp/libsodium.tar.gz \
+RUN wget https://download.libsodium.org/libsodium/releases/libsodium-1.0.16.tar.gz --output-document=/tmp/libsodium.tar.gz \
     && cd /tmp \
     && tar -xzvf libsodium.tar.gz \
-    && cd libsodium-1.0.13 \
+    && cd libsodium-1.0.16 \
     && ./configure \
     && make && make check && make install \
     && rm -rf /tmp/libsodium*
