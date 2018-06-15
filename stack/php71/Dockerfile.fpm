@@ -25,7 +25,7 @@ RUN apt-get update \
         libfreetype6-dev \
         libjpeg62-turbo-dev \
         libmcrypt-dev \
-        libpng12-dev \
+        libpng-dev \
         imagemagick \
         git \
         locales \
@@ -34,7 +34,7 @@ RUN apt-get update \
         libmcrypt-dev \
         zip \
         unzip \
-        libicu52 \
+        libicu57 \
         libmagickwand-6.q16-dev --no-install-recommends \
         libicu-dev \
         g++ \
@@ -114,6 +114,7 @@ RUN chmod +x /home/php/composer.sh \
 
 # php.ini
 COPY conf.d/php.ini /usr/local/etc/php/conf.d/00-php.ini
+COPY conf.d/fpm-pool.conf /usr/local/etc/php-fpm.d/www.conf
 
 # Run commands inside this container as the created PHP user.
 USER php
