@@ -1,5 +1,5 @@
 FROM mysql:5.7.20
-LABEL maintainer Bert Oost <hello@bertoost.com>
+LABEL maintainer="Bert Oost <hello@bertoost.com>"
 
 RUN echo Europe/Amsterdam > /etc/timezone \
     && dpkg-reconfigure --frontend noninteractive tzdata

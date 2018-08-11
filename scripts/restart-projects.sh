@@ -75,12 +75,13 @@ function restart_project()
         fi
     else
         if [ "$UP_ONLY" = true ]; then
+            docker-compose pull
             docker-compose up -d
         elif [ "$DOWN_ONLY" = true ]; then
             docker-compose down --remove-orphans
         else
-            docker-compose down --remove-orphans
             docker-compose pull
+            docker-compose down --remove-orphans
             docker-compose up -d
         fi
     fi
