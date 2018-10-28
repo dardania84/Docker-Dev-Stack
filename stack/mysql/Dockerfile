@@ -1,4 +1,4 @@
-FROM mysql:5.7.20
+FROM mysql:5.7.24
 LABEL maintainer="Bert Oost <hello@bertoost.com>"
 
 RUN echo Europe/Amsterdam > /etc/timezone \
