@@ -9,8 +9,17 @@ then
 fi
 
 # Create necessary networks
-docker network create webgateway
-docker network create development
+NETWORKS[0]="development"
+NETWORKS[2]="webgateway"
+
+for NETWORKNAME in "${NETWORKS[@]}"
+do
+    CHECK_NETWORK="$(docker network inspect --format={{.Id}} ${NETWORKNAME} 2>&1)"
+    if [[ $CHECK_NETWORK == *"No such network"* ]]; then
+        echo "Creating netork: ${NETWORKNAME}"
+        docker network create $NETWORKNAME
+    fi
+done
 
 # Up dev-stack
 docker-compose up -d
