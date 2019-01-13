@@ -1,4 +1,4 @@
-FROM php:7.1.20-fpm
+FROM php:7.1.26-fpm
 
 LABEL maintainer="Bert Oost <hello@bertoost.com>"
 
