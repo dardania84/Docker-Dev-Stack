@@ -2,9 +2,7 @@
 
 [![Build Status](https://travis-ci.org/bertoost/Docker-Dev-Stack.svg?branch=master)](https://travis-ci.org/bertoost/Docker-Dev-Stack)
 
-<aside class="notice">
-The purpose of this development stack with Docker images is to help setting up a local environment for development of PHP/MySQL projects. It's not meant to be used in production.
-</aside>
+> The purpose of this development stack with Docker images is to help setting up a local environment for development of PHP/MySQL projects. It's not meant to be used in production.
 
 Before you use this dev stack, please read the following topics.
 
