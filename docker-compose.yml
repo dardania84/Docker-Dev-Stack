@@ -87,7 +87,7 @@ services:
       - development
 
   php73:
-    image: bertoost/php73:fpm
+    image: bertoost/php73:fpm-development
     container_name: php73
     restart: always
     volumes:

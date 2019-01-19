@@ -9,15 +9,18 @@ RUN apt-get update \
         nano \
         vim \
         git
-RUN pecl install xdebug
+
+# Install xdebug
+RUN pecl install xdebug-2.7.0beta1 \
+	&& docker-php-ext-enable xdebug
+
+# Xdebug config.
+COPY conf.d/pecl-xdebug.ini /usr/local/etc/php/conf.d/pecl-xdebug.ini
 
 # Remove temporary stuff
 RUN apt-get purge -y --auto-remove \
     libicu-dev \
     g++
-
-# Xdebug config.
-COPY conf.d/pecl-xdebug.ini /usr/local/etc/php/conf.d/pecl-xdebug.ini
 
 # Download and add-in BlackFire
 RUN version=$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;") \
