@@ -25,7 +25,7 @@ services:
     container_name: nginx
     restart: always
     links:
-      - php71:php
+      - php71:php71
       - php72:php72
     volumes:
       - ./logs/nginx:/var/log/nginx
@@ -70,7 +70,7 @@ services:
     container_name: php72
     restart: always
     volumes:
-      - ./logs/php72:/var/log/php72
+      - ./logs/php72:/var/log/php
       - ./data/composer:/home/php/.composer
       - ${PROJECTS_DIR-./projects}:/var/www/html
     links:

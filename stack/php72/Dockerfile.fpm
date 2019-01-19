@@ -19,25 +19,23 @@ COPY conf.d/ssmtp.conf /etc/ssmtp/ssmtp.conf
 
 # Install modules
 RUN apt-get update \
-    && apt-get install -y \
+    && apt-get install -y --no-install-recommends \
         wget \
         build-essential \
         libfreetype6-dev \
-        libjpeg62-turbo-dev \
-        libmcrypt-dev \
-        imagemagick \
-        git \
-        locales \
-        libssl-dev \
-        re2c \
-        libmcrypt-dev \
-        zip \
-        unzip \
-        libmagickwand-6.q16-dev --no-install-recommends \
         libicu-dev \
-        g++ \
-        ssmtp \
+        libjpeg62-turbo-dev \
+        libmagickwand-6.q16-dev \
+        libmcrypt-dev \
+        libssl-dev \
         libyaml-dev \
+        imagemagick \
+        locales \
+        re2c \
+        unzip \
+        g++ \
+        zip \
+        ssmtp \
         gettext \
         openssh-client \
         pdftk \
