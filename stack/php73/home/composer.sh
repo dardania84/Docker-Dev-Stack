@@ -13,4 +13,4 @@ options=$(ls -1 /usr/local/lib/php/extensions/no-debug-non-zts-20180731| \
 )
 
 # build the final command line
-/usr/local/bin/php --no-php-ini -d date.timezone=${TZ:=Europe/Amsterdam} -d memory_limit=-1 -d sendmail_path="/usr/sbin/ssmtp -t" $options /usr/local/bin/composer.phar $*
+/usr/local/bin/php --no-php-ini -d date.timezone=${PHP_DATE_TIMEZONE} -d memory_limit=-1 -d sendmail_path="/usr/sbin/ssmtp -t" $options /usr/local/bin/composer.phar $*
