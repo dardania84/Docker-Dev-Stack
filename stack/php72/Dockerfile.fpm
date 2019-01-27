@@ -1,6 +1,8 @@
-FROM php:7.2.11-fpm-stretch
+FROM php:7.2.14-fpm-stretch
 
 LABEL maintainer="Bert Oost <hello@bertoost.com>"
+
+USER root
 
 # Create docker PHP user.
 RUN adduser \
@@ -11,33 +13,25 @@ RUN adduser \
    --disabled-password \
    php
 
-RUN mkdir -p /var/www/html \
-    && chown php:php /var/www/html
-
-# SSMTP config.
-COPY conf.d/ssmtp.conf /etc/ssmtp/ssmtp.conf
-
 # Install modules
 RUN apt-get update \
-    && apt-get install -y \
+    && apt-get install -y --no-install-recommends \
         wget \
         build-essential \
         libfreetype6-dev \
-        libjpeg62-turbo-dev \
-        libmcrypt-dev \
-        imagemagick \
-        git \
-        locales \
-        libssl-dev \
-        re2c \
-        libmcrypt-dev \
-        zip \
-        unzip \
-        libmagickwand-6.q16-dev --no-install-recommends \
         libicu-dev \
-        g++ \
-        ssmtp \
+        libjpeg62-turbo-dev \
+        libmagickwand-6.q16-dev \
+        libmcrypt-dev \
+        libssl-dev \
         libyaml-dev \
+        imagemagick \
+        locales \
+        re2c \
+        unzip \
+        g++ \
+        zip \
+        ssmtp \
         gettext \
         openssh-client \
         pdftk \
@@ -81,26 +75,36 @@ RUN pecl install \
     imagick \
     APCu
 
-RUN echo "extension=yaml.so" > /usr/local/etc/php/conf.d/pecl-yaml.ini \
-    && echo "extension=imagick.so" > /usr/local/etc/php/conf.d/pecl-imagck.ini \
-    && echo "extension=apcu.so" > /usr/local/etc/php/conf.d/pecl-apcu.ini
-
-# Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer.phar
-
 # Remove temporary stuff
 RUN apt-get purge -y --auto-remove \
     libicu-dev \
     g++
+
+# create the default running directory
+RUN mkdir -p /var/www/html \
+    && chown php:php /var/www/html
+
+# Create the config ini files
+RUN cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/conf.d/00-php.ini \
+    && echo "extension=yaml.so" > /usr/local/etc/php/conf.d/pecl-yaml.ini \
+    && echo "extension=imagick.so" > /usr/local/etc/php/conf.d/pecl-imagck.ini \
+    && echo "extension=apcu.so" > /usr/local/etc/php/conf.d/pecl-apcu.ini
+
+COPY conf.d/php-prod.ini /usr/local/etc/php/conf.d/01-php-overrides.ini
+
+# SSMTP config.
+COPY conf.d/ssmtp.conf /etc/ssmtp/ssmtp.conf
+
+# Composer
+RUN curl -sS https://getcomposer.org/installer | php -d memory_limit=-1 -- \
+    --install-dir=/usr/local/bin \
+    --filename=composer.phar
 
 # Add composer and php scripts for aliases.
 COPY home/ /home/php/
 RUN chmod +x /home/php/composer.sh \
     && chmod +x /home/php/php.sh \
     && chown php:php /home/php/php.sh /home/php/composer.sh
-
-# php.ini
-COPY conf.d/php.ini /usr/local/etc/php/conf.d/00-php.ini
 
 # Run commands inside this container as the created PHP user.
 USER php

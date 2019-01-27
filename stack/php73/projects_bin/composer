@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+docker exec -it CONTAINER_ID bash -c "\/home\/php\/composer.sh $*"

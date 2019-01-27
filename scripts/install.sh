@@ -1,16 +1,10 @@
 #!/bin/sh
 
-# Copy default.env to .env if not already exists
-if [ ! -f ".env" ]
-then
-    cp default.env .env
-    echo "Please check the .env file and change the values to your needs. Then re-run install.sh script again."
-    exit
-fi
+# Check .env file
+source helpers/envfile.sh
 
-# Create necessary networks
-docker network create webgateway
-docker network create development
+# Check and install networks
+source helpers/networks.sh
 
 # Up dev-stack
 docker-compose up -d

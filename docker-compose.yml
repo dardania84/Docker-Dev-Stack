@@ -2,7 +2,7 @@
 version: "3.3"
 services:
   traefik:
-    image: traefik:v1.6.3
+    image: traefik:v1.7.7
     container_name: traefik
     restart: always
     command: "--web --docker --docker.domain=${DEV_HOST_DOMAIN} --docker.watch=true --docker.exposedbydefault=false --logLevel=DEBUG"
@@ -25,8 +25,9 @@ services:
     container_name: nginx
     restart: always
     links:
-      - php71:php
+      - php71:php71
       - php72:php72
+      - php73:php73
     volumes:
       - ./logs/nginx:/var/log/nginx
       - ./data/nginx:/etc/nginx/conf.d/custom
@@ -70,7 +71,7 @@ services:
     container_name: php72
     restart: always
     volumes:
-      - ./logs/php72:/var/log/php72
+      - ./logs/php72:/var/log/php
       - ./data/composer:/home/php/.composer
       - ${PROJECTS_DIR-./projects}:/var/www/html
     links:
@@ -80,6 +81,40 @@ services:
       BINARY_DIRECTORY: ''
       XDEBUG_HOST: ${DEV_HOST_DOMAIN}
       BLACKFIRE_HOST: ${DEV_HOST_DOMAIN}
+      # PHP Environment variables
+      # Copy keys to .env file to override these defaults
+      PHP_DATE_TIMEZONE: ${PHP_DATE_TIMEZONE:-Europe/Amsterdam}
+      PHP_MAX_EXECUTION_TIME: ${PHP_MAX_EXECUTION_TIME:-60}
+      PHP_MEMORY_LIMIT: ${PHP_MEMORY_LIMIT:-256M}
+      PHP_POST_MAX_SIZE: ${PHP_POST_MAX_SIZE:-128M}
+      PHP_UPLOAD_MAX_FILESIZE: ${PHP_UPLOAD_MAX_FILESIZE:-128M}
+    env_file:
+      - .env
+    networks:
+      - development
+
+  php73:
+    image: bertoost/php73:fpm-development
+    container_name: php73
+    restart: always
+    volumes:
+      - ./logs/php73:/var/log/php
+      - ./data/composer:/home/php/.composer
+      - ${PROJECTS_DIR-./projects}:/var/www/html
+    links:
+      - mysql
+      - ${DEV_MAIL_CONTAINERNAME-postoffice}:mail.docker.local
+    environment:
+      BINARY_DIRECTORY: ''
+      XDEBUG_HOST: ${DEV_HOST_DOMAIN}
+      BLACKFIRE_HOST: ${DEV_HOST_DOMAIN}
+      # PHP Environment variables
+      # Copy keys to .env file to override these defaults
+      PHP_DATE_TIMEZONE: ${PHP_DATE_TIMEZONE:-Europe/Amsterdam}
+      PHP_MAX_EXECUTION_TIME: ${PHP_MAX_EXECUTION_TIME:-60}
+      PHP_MEMORY_LIMIT: ${PHP_MEMORY_LIMIT:-256M}
+      PHP_POST_MAX_SIZE: ${PHP_POST_MAX_SIZE:-128M}
+      PHP_UPLOAD_MAX_FILESIZE: ${PHP_UPLOAD_MAX_FILESIZE:-128M}
     env_file:
       - .env
     networks:

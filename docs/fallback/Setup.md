@@ -12,13 +12,13 @@ Traefik is configured to load this fallback stuff as last. Meaning, if any docke
 
 ## Supported URLs
 
-`<project>.php71.{domain}`
-
-This kind of URLs are leading to your projects-directory loaded via PHP7.1
-
 `<project>.php72.{domain}`
 
 This kind of URLs are leading to your projects-directory loaded via PHP7.2
+
+`<project>.php73.{domain}`
+
+This kind of URLs are leading to your projects-directory loaded via PHP7.3
 
 `my-project.php*.{domain}`
 

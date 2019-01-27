@@ -1,4 +1,4 @@
-FROM bertoost/php72:fpm
+FROM bertoost/php73:fpm
 
 LABEL maintainer="Bert Oost <hello@bertoost.com>"
 
@@ -14,13 +14,13 @@ RUN apt-get update \
         git
 
 # Install xdebug
-RUN pecl install xdebug-2.6.1 \
-    && docker-php-ext-enable xdebug
+RUN pecl install xdebug-2.7.0beta1 \
+	&& docker-php-ext-enable xdebug
 
 # Remove temporary stuff
 RUN apt-get purge -y --auto-remove \
-        libicu-dev \
-        g++ \
+    libicu-dev \
+    g++ \
     && rm -rf /var/lib/apt/lists/*
 
 # Download and add-in BlackFire
