@@ -4,7 +4,7 @@ options=$(ls -1 /usr/local/lib/php/extensions/no-debug-non-zts-20170718| \
     grep --invert-match xdebug| \
 
     # remove problematic extensions
-    egrep --invert-match 'wddx|pgsql|iconv|mbstring|opcache|blackfire|pdo\.so'|sodium\.a| \
+    egrep --invert-match 'wddx|pgsql|iconv|mbstring|opcache|blackfire|pdo\.so|sodium\.a'| \
 
     sed --expression 's/\(.*\)/ --define extension=\1/'| \
 
