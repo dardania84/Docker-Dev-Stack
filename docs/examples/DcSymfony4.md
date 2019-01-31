@@ -42,12 +42,11 @@ services:
       APP_ENV: 'dev'
       APP_SECRET: 'ThisIsNotSoSecretChangeIt'
       # PHP Environment variables
-      # Copy keys to .env file to override these defaults
-      PHP_DATE_TIMEZONE: ${PHP_DATE_TIMEZONE:-Europe/Amsterdam}
-      PHP_MAX_EXECUTION_TIME: ${PHP_MAX_EXECUTION_TIME:-60}
-      PHP_MEMORY_LIMIT: ${PHP_MEMORY_LIMIT:-256M}
-      PHP_POST_MAX_SIZE: ${PHP_POST_MAX_SIZE:-128M}
-      PHP_UPLOAD_MAX_FILESIZE: ${PHP_UPLOAD_MAX_FILESIZE:-128M}
+      # PHP_DATE_TIMEZONE: Europe/Paris
+      # PHP_MAX_EXECUTION_TIME: 60
+      # PHP_MEMORY_LIMIT: 256M
+      # PHP_POST_MAX_SIZE: 128M
+      # PHP_UPLOAD_MAX_FILESIZE: 128M
     volumes:
       - './:/var/www/html:rw'
       - '${DEV_COMPOSER_DATA-~/.composer}:/home/php/.composer'

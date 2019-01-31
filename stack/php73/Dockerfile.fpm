@@ -109,4 +109,10 @@ RUN chmod +x /home/php/composer.sh \
 # Run commands inside this container as the created PHP user.
 USER php
 
+ENV PHP_DATE_TIMEZONE=Europe/Amsterdam
+ENV PHP_MAX_EXECUTION_TIME=60
+ENV PHP_MEMORY_LIMIT=256M
+ENV PHP_POST_MAX_SIZE=128M
+ENV PHP_UPLOAD_MAX_FILESIZE=128M
+
 CMD ["php-fpm"]
