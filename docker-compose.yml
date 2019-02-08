@@ -7,8 +7,8 @@ services:
     restart: always
     command: "--web --docker --docker.domain=${DEV_HOST_DOMAIN} --docker.watch=true --docker.exposedbydefault=false --logLevel=DEBUG"
     ports:
-      - "80:80"
-      - "443:443"
+      - "${TRAEFIK_PORT_HTTP:-80}:80"
+      - "${TRAEFIK_PORT_HTTPS:-443}:443"
     labels:
       traefik.enable: 'true'
       traefik.port: '8080'
@@ -21,7 +21,7 @@ services:
       - webgateway
 
   nginx:
-    image: bertoost/nginx:dev
+    image: ${DOCKER_USERNAME:-bertoost}/nginx:dev
     container_name: nginx
     restart: always
     links:
@@ -47,7 +47,7 @@ services:
       - webgateway
 
   php71:
-    image: bertoost/php71:fpm-development
+    image: ${DOCKER_USERNAME:-bertoost}/php71:fpm-development
     container_name: php71
     restart: always
     volumes:
@@ -67,7 +67,7 @@ services:
       - development
 
   php72:
-    image: bertoost/php72:fpm-development
+    image: ${DOCKER_USERNAME:-bertoost}/php72:fpm-development
     container_name: php72
     restart: always
     volumes:
@@ -93,7 +93,7 @@ services:
       - development
 
   php73:
-    image: bertoost/php73:fpm-development
+    image: ${DOCKER_USERNAME:-bertoost}/php73:fpm-development
     container_name: php73
     restart: always
     volumes:
@@ -119,11 +119,11 @@ services:
       - development
 
   mysql:
-    image: bertoost/mysql:latest
+    image: ${DOCKER_USERNAME:-bertoost}/mysql:latest
     container_name: mysql
     restart: always
     ports:
-      - "3306:3306"
+      - "13306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
