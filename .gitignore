@@ -6,7 +6,7 @@
 /data/*
 /logs/*
 /.env
-/traefik/.env
+/stack/**/*.working
 /restart-projects.sh
 
 !.gitkeep

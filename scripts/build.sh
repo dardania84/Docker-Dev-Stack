@@ -77,17 +77,34 @@ parse_dockerfile()
 
     echo "Preparing $IMAGENAME:$TAG ..."
 
-    if [ "$DO_BUILD" = true ]; then
+    if [[ "$DO_BUILD" = true ]]; then
+
         # pull before build to grab some cache
         docker pull "${IMAGENAME}:${TAG}"
-        docker build -f "${DOCKERFILE_RELATIVE}" -t "${IMAGENAME}:${TAG}" .
+
+        # create a working copy when docker-username is set
+        # since Dockerfiles can't have environment variables in the FROM statement
+        if [[ "${DOCKER_USERNAME}" != "" ]]; then
+            cp ${DOCKERFILE_RELATIVE} ${DOCKERFILE_RELATIVE}.working
+            sed -i "s/FROM bertoost/FROM ${DOCKER_USERNAME}/g" ${DOCKERFILE_RELATIVE}.working
+
+            # build working file
+            docker build -f "${DOCKERFILE_RELATIVE}.working" -t "${IMAGENAME}:${TAG}" .
+
+            rm -f ${DOCKERFILE_RELATIVE}.working;
+        else
+            # build docker file
+            docker build -f "${DOCKERFILE_RELATIVE}" -t "${IMAGENAME}:${TAG}" .
+        fi
+
+        exit
     fi
 
-    if [ "$DO_PUSH" = true ]; then
+    if [[ "$DO_PUSH" = true ]]; then
         docker push "${IMAGENAME}:${TAG}"
     fi
 
-    cd $EXECUTEDIR
+    cd ${EXECUTEDIR}
 
     echo ""
     echo "------------------------"
@@ -107,7 +124,7 @@ if [ -d $DOCKERFILE ]; then
                 parse_dockerfile $FILE
             else
                 read -p "Do you want to parse ${FILEBASE} (Y/n)?" COND
-                if [ "$COND" = "y" ] || [ "$COND" = "" ]; then
+                if [ "$COND" = "y" ] || [ "$COND" = "Y" ] || [ "$COND" = "" ]; then
                     parse_dockerfile $FILE
                 fi
             fi
