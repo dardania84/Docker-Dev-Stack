@@ -107,7 +107,7 @@ if [ -d $DOCKERFILE ]; then
                 parse_dockerfile $FILE
             else
                 read -p "Do you want to parse ${FILEBASE} (Y/n)?" COND
-                if [ "$COND" = "y" ] || [ "$COND" = "" ]; then
+                if [ "$COND" = "y" ] || [ "$COND" = "Y" ] || [ "$COND" = "" ]; then
                     parse_dockerfile $FILE
                 fi
             fi
