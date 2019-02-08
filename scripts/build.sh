@@ -6,6 +6,11 @@ DO_BUILD=false
 DO_PUSH=false
 DO_FORCED=false
 
+ENVFILE=$EXECUTEDIR/.env
+if [ -f $ENVFILE ]; then
+    export $(grep -v '^#' $ENVFILE | xargs)
+fi
+
 if [ "$DOCKER_USERNAME" = "" ]; then
     DOCKER_USERNAME=bertoost
 fi
