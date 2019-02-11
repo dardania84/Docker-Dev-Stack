@@ -96,8 +96,6 @@ parse_dockerfile()
             # build docker file
             docker build -f "${DOCKERFILE_RELATIVE}" -t "${IMAGENAME}:${TAG}" .
         fi
-
-        exit
     fi
 
     if [[ "$DO_PUSH" = true ]]; then
