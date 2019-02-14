@@ -10,16 +10,9 @@ branches:
     - master
 
 script:
-  - bash ./scripts/build.sh stack/mysql --force --build
-  - bash ./scripts/build.sh stack/nginx --force --build
-  - bash ./scripts/build.sh stack/php71 --force --build
-
-after_success:
-  - if [[ "$TRAVIS_BRANCH" == "master" ]]; then
-      docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD ;
-      bash ./scripts/build.sh stack/mysql --force --push
-      bash ./scripts/build.sh stack/nginx --force --push
-      bash ./scripts/build.sh stack/php71 --force --push
-      bash ./scripts/build.sh stack/php72 --force --push
-      bash ./scripts/build.sh stack/php73 --force --push
-    fi
+  - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+  - bash ./scripts/build.sh stack/mysql --force --build --push
+  - bash ./scripts/build.sh stack/nginx --force --build --push
+  - bash ./scripts/build.sh stack/php71 --force --build --push
+  - bash ./scripts/build.sh stack/php72 --force --build --push
+  - bash ./scripts/build.sh stack/php73 --force --build --push
