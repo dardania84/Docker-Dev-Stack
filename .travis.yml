@@ -10,7 +10,6 @@ branches:
     - master
 
 script:
-  - docker login --username=$DOCKER_USERNAME --password=$DOCKER_PASSWORD
   - bash ./scripts/build.sh stack/mysql --force --build
   - bash ./scripts/build.sh stack/nginx --force --build
   - bash ./scripts/build.sh stack/php71 --force --build
@@ -18,7 +17,7 @@ script:
   - bash ./scripts/build.sh stack/php73 --force --build
 
 after_success:
-  - docker login --username=$DOCKER_USERNAME --password=$DOCKER_PASSWORD
+  - echo $DOCKER_PASSWORD | docker login --username=$DOCKER_USERNAME --password-stdin
   - bash ./scripts/build.sh stack/mysql --force --push
   - bash ./scripts/build.sh stack/nginx --force --push
   - bash ./scripts/build.sh stack/php71 --force --push
