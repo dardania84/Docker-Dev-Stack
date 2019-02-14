@@ -10,7 +10,7 @@ branches:
     - master
 
 script:
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
   - bash ./scripts/build.sh stack/mysql --force --build --push
   - bash ./scripts/build.sh stack/nginx --force --build --push
   - bash ./scripts/build.sh stack/php71 --force --build --push
