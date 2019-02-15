@@ -2,7 +2,7 @@
 version: "3.3"
 services:
   traefik:
-    image: traefik:v1.7.7
+    image: traefik:v1.7
     container_name: traefik
     restart: always
     command: "--web --docker --docker.domain=${DEV_HOST_DOMAIN} --docker.watch=true --docker.exposedbydefault=false --logLevel=DEBUG"
