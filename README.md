@@ -1,4 +1,6 @@
-# Docker Dev Stack
+<p align="center"><img src="docs/docker-logo.svg" alt="Docker" width="400"></p>
+
+<h1 align="center">Docker Dev Stack</h1>
 
 [![Build Status](https://travis-ci.org/bertoost/Docker-Dev-Stack.svg?branch=master)](https://travis-ci.org/bertoost/Docker-Dev-Stack)
 
