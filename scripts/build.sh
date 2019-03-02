@@ -82,20 +82,29 @@ parse_dockerfile()
     TYPE=$(echo ${TYPE} | sed -e "s/Dockerfile\.//g")
     TYPE=$(echo ${TYPE} | sed -e "s/\./-/g")
     if [[ "${TYPE}" = "Dockerfile" ]]; then
-        TYPE="latest"
+        TYPE=""
+    fi
+
+    if [[ "${TYPE}" != "" ]]; then
+        TYPE="-${TYPE}"
     fi
 
     # create first tag (full)
-    TAG_LONG="${IMAGENAME}:${FROMVERSION_LONG}-${TYPE}"
-    TAG_MEDIUM="${IMAGENAME}:${FROMVERSION_MEDIUM}-${TYPE}"
-    TAG_SHORT="${IMAGENAME}:${FROMVERSION_SHORT}-${TYPE}"
+    TAG_LONG="${IMAGENAME}:${FROMVERSION_LONG}${TYPE}"
+    TAG_MEDIUM="${IMAGENAME}:${FROMVERSION_MEDIUM}${TYPE}"
+    TAG_SHORT="${IMAGENAME}:${FROMVERSION_SHORT}${TYPE}"
+
+    TAG_LATEST=""
+    if [[ "${TYPE}" = "" ]]; then
+        TAG_LATEST="${IMAGENAME}:latest"
+    fi
 
     echo "Preparing ${TAG_LONG} ..."
 
     if [[ "$DO_BUILD" = true ]]; then
 
         # pull before build to grab some cache
-        docker pull "${IMAGENAME}:${TAG}"
+        docker pull "${IMAGENAME}:${TAG_LONG}"
 
         # create a working copy when docker-username is set
         # since Dockerfiles can't have environment variables in the FROM statement
@@ -104,12 +113,20 @@ parse_dockerfile()
             sed -i "s/FROM bertoost/FROM ${DOCKER_USERNAME}/g" ${DOCKERFILE_RELATIVE}.working
 
             # build working file
-            docker build -f "${DOCKERFILE_RELATIVE}.working" -t "${TAG_LONG}" -t "${TAG_MEDIUM}" -t "${TAG_SHORT}" .
+            if [[ "${TAG_LATEST}" != "" ]]; then
+                docker build -f "${DOCKERFILE_RELATIVE}.working" -t "${TAG_LONG}" -t "${TAG_MEDIUM}" -t "${TAG_SHORT}" -t "${TAG_LATEST}" .
+            else
+                docker build -f "${DOCKERFILE_RELATIVE}.working" -t "${TAG_LONG}" -t "${TAG_MEDIUM}" -t "${TAG_SHORT}" .
+            fi
 
             rm -f ${DOCKERFILE_RELATIVE}.working;
         else
             # build docker file
-            docker build -f "${DOCKERFILE_RELATIVE}" -t "${TAG_LONG}" -t "${TAG_MEDIUM}" -t "${TAG_SHORT}" .
+            if [[ "${TAG_LATEST}" != "" ]]; then
+                docker build -f "${DOCKERFILE_RELATIVE}" -t "${TAG_LONG}" -t "${TAG_MEDIUM}" -t "${TAG_SHORT}" -t "${TAG_LATEST}" .
+            else
+                docker build -f "${DOCKERFILE_RELATIVE}" -t "${TAG_LONG}" -t "${TAG_MEDIUM}" -t "${TAG_SHORT}" .
+            fi
         fi
     fi
 
@@ -117,6 +134,10 @@ parse_dockerfile()
         docker push "${TAG_LONG}"
         docker push "${TAG_MEDIUM}"
         docker push "${TAG_SHORT}"
+
+        if [[ "${TAG_LATEST}" != "" ]]; then
+            docker push "${TAG_LATEST}"
+        fi
     fi
 
     cd ${EXECUTEDIR}
