@@ -1,5 +1,6 @@
-FROM bertoost/nginx:1.15.9-latest
-LABEL maintainer Bert Oost <hello@bertoost.com>
+FROM bertoost/nginx:1.15.9
+
+LABEL maintainer="Bert Oost <hello@bertoost.com>"
 
 # Remove any parent placeholder files from NginX config
 RUN find /etc/nginx/conf.d/ -name "*.placeholder" -type f -delete
