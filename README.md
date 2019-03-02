@@ -16,7 +16,8 @@ Before you use this dev stack, please read the following topics.
   - [Frontends vs. Backends](docs/Traefik.md#frontends-vs-backends)
   - [Per project basis](docs/Traefik.md#using-traefik-on-per-project-basis)
   - [Auto-added binary files](docs/Traefik.md#auto-added-binary-files)
-- [MySQL, Mailhog & Portainer](docs/Others.md)
+- [MySQL & Upgrading version](docs/MySQL.md)
+- [Mailhog & Portainer](docs/Others.md)
 - [Dev Stack Fallback setup](docs/fallback/Setup.md)
 
 For advanced users

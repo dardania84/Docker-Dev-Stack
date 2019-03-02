@@ -1,4 +1,6 @@
-# Custom NginX configuration
+<p align="center"><img src="images/nginx-logo.svg" alt="NginX" width="400"></p>
+
+<hr>
 
 Sometimes it is necessary to add custom configuration for the NginX webserver.
 
