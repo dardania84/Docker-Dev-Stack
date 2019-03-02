@@ -59,6 +59,7 @@ fi
 parse_dockerfile()
 {
     DOCKERFILE=$1
+    SLASHCOUNT=$(awk -F"/" '{print NF-1}' <<< "${DOCKERFILE}")
 
     DIR=$(dirname "${DOCKERFILE}")
     cd $DIR
@@ -77,7 +78,7 @@ parse_dockerfile()
     FROMVERSION_SHORT=$(sed 's/\(.*\)\..*/\1/' <<< "$FROMVERSION_MEDIUM") # 1
 
     # determine the tag specifics (fpm-development etc.)
-    TYPE=$(cut -d/ -f4 <<< "${DOCKERFILE}")
+    TYPE=$(cut -d/ -f$((${SLASHCOUNT}+1)) <<< "${DOCKERFILE}")
     TYPE=$(echo ${TYPE} | sed -e "s/Dockerfile\.//g")
     TYPE=$(echo ${TYPE} | sed -e "s/\./-/g")
     if [[ "${TYPE}" = "Dockerfile" ]]; then
