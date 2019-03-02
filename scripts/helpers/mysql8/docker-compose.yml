@@ -1,0 +1,20 @@
+version: "3.7"
+services:
+  mysql8:
+    image: ${DOCKER_USERNAME:-bertoost}/mysql:8.0
+    container_name: mysql8
+    ports:
+      - "13306:3306"
+    environment:
+      TZ: ${MYSQL_TIMEZONE:-Europe/Amsterdam}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD:-mysql}
+    volumes:
+      - ../../../data/mysql8:/var/lib/mysql:rw
+      - ../../../logs/mysql8:/var/log/mysql
+    networks:
+      - development
+
+networks:
+  development:
+    external:
+      name: development
