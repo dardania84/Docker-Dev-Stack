@@ -59,47 +59,85 @@ fi
 parse_dockerfile()
 {
     DOCKERFILE=$1
+    SLASHCOUNT=$(awk -F"/" '{print NF-1}' <<< "${DOCKERFILE}")
 
     DIR=$(dirname "${DOCKERFILE}")
     cd $DIR
 
     DOCKERFILE_RELATIVE=$(basename "${DOCKERFILE}")
 
+    # determine the vendor/image name
     IMAGENAME=$(cut -d/ -f2 <<< "${DOCKERFILE}")
     IMAGENAME="$DOCKER_USERNAME/$IMAGENAME"
 
-    TAG=$(cut -d/ -f3 <<< "${DOCKERFILE}")
-    TAG=$(echo ${TAG} | sed -e "s/Dockerfile\.//g")
-    TAG=$(echo ${TAG} | sed -e "s/\./-/g")
-    if [[ "${TAG}" = "Dockerfile" ]]; then
-        TAG="latest"
+    # read version from the Docker file
+    FROMVERSION=$(head -n 1 ${DOCKERFILE_RELATIVE})
+    FROMVERSION=$(cut -d ":" -f 2 <<< "$FROMVERSION")
+    FROMVERSION_LONG=$(sed 's/-.*//' <<< "$FROMVERSION") # 1.2.3
+    FROMVERSION_MEDIUM=$(sed 's/\(.*\)\..*/\1/' <<< "$FROMVERSION_LONG") # 1.2
+    FROMVERSION_SHORT=$(sed 's/\(.*\)\..*/\1/' <<< "$FROMVERSION_MEDIUM") # 1
+
+    # determine the tag specifics (fpm-development etc.)
+    TYPE=$(cut -d/ -f$((${SLASHCOUNT}+1)) <<< "${DOCKERFILE}")
+    TYPE=$(echo ${TYPE} | sed -e "s/Dockerfile\.//g")
+    TYPE=$(echo ${TYPE} | sed -e "s/\./-/g")
+    if [[ "${TYPE}" = "Dockerfile" ]]; then
+        TYPE=""
     fi
 
-    echo "Preparing $IMAGENAME:$TAG ..."
+    if [[ "${TYPE}" != "" ]]; then
+        TYPE="-${TYPE}"
+    fi
+
+    # create first tag (full)
+    TAG_LONG="${IMAGENAME}:${FROMVERSION_LONG}${TYPE}"
+    TAG_MEDIUM="${IMAGENAME}:${FROMVERSION_MEDIUM}${TYPE}"
+    TAG_SHORT="${IMAGENAME}:${FROMVERSION_SHORT}${TYPE}"
+
+    TAG_LATEST=""
+    if [[ "${TYPE}" = "" ]]; then
+        TAG_LATEST="${IMAGENAME}:latest"
+    fi
+
+    echo "Preparing ${TAG_LONG} ..."
 
     if [[ "$DO_BUILD" = true ]]; then
 
         # pull before build to grab some cache
-        docker pull "${IMAGENAME}:${TAG}"
+        docker pull "${IMAGENAME}:${TAG_LONG}"
 
         # create a working copy when docker-username is set
         # since Dockerfiles can't have environment variables in the FROM statement
-        if [[ "${DOCKER_USERNAME}" != "" ]]; then
+        if [[ "${DOCKER_USERNAME}" != "bertoost" ]]; then
             cp ${DOCKERFILE_RELATIVE} ${DOCKERFILE_RELATIVE}.working
             sed -i "s/FROM bertoost/FROM ${DOCKER_USERNAME}/g" ${DOCKERFILE_RELATIVE}.working
 
             # build working file
-            docker build -f "${DOCKERFILE_RELATIVE}.working" -t "${IMAGENAME}:${TAG}" .
+            if [[ "${TAG_LATEST}" != "" ]]; then
+                docker build -f "${DOCKERFILE_RELATIVE}.working" -t "${TAG_LONG}" -t "${TAG_MEDIUM}" -t "${TAG_SHORT}" -t "${TAG_LATEST}" .
+            else
+                docker build -f "${DOCKERFILE_RELATIVE}.working" -t "${TAG_LONG}" -t "${TAG_MEDIUM}" -t "${TAG_SHORT}" .
+            fi
 
             rm -f ${DOCKERFILE_RELATIVE}.working;
         else
             # build docker file
-            docker build -f "${DOCKERFILE_RELATIVE}" -t "${IMAGENAME}:${TAG}" .
+            if [[ "${TAG_LATEST}" != "" ]]; then
+                docker build -f "${DOCKERFILE_RELATIVE}" -t "${TAG_LONG}" -t "${TAG_MEDIUM}" -t "${TAG_SHORT}" -t "${TAG_LATEST}" .
+            else
+                docker build -f "${DOCKERFILE_RELATIVE}" -t "${TAG_LONG}" -t "${TAG_MEDIUM}" -t "${TAG_SHORT}" .
+            fi
         fi
     fi
 
     if [[ "$DO_PUSH" = true ]]; then
-        docker push "${IMAGENAME}:${TAG}"
+        docker push "${TAG_LONG}"
+        docker push "${TAG_MEDIUM}"
+        docker push "${TAG_SHORT}"
+
+        if [[ "${TAG_LATEST}" != "" ]]; then
+            docker push "${TAG_LATEST}"
+        fi
     fi
 
     cd ${EXECUTEDIR}

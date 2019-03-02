@@ -1,7 +1,10 @@
-# Docker Dev Stack
+<p align="center"><img src="docs/images/docker-logo.svg" alt="Docker" width="400"></p>
+
+<h1 align="center">Docker Dev Stack</h1>
 
 [![Build Status](https://travis-ci.org/bertoost/Docker-Dev-Stack.svg?branch=master)](https://travis-ci.org/bertoost/Docker-Dev-Stack)
 
+> __Please read the docs carefully__  
 > The purpose of this development stack with Docker images is to help setting up a local environment for development of PHP/MySQL projects. It's not meant to be used in production.
 
 Before you use this dev stack, please read the following topics.
@@ -15,6 +18,9 @@ Before you use this dev stack, please read the following topics.
   - [Auto-added binary files](docs/Traefik.md#auto-added-binary-files)
 - [MySQL, Mailhog & Portainer](docs/Others.md)
 - [Dev Stack Fallback setup](docs/fallback/Setup.md)
+
+For advanced users
+
 - [Custom NginX Config](docs/CustomNginx.md)
   - [Configuration folder](docs/CustomNginx.md#configuration-folder)
   - [Environment variables](docs/CustomNginx.md#using-environment-variables)

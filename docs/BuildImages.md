@@ -13,15 +13,29 @@ Option    | Description
 
 __Example usage__
 
-```
-sh scripts/build.sh stack/php71/Dockerfile.fpm --build --push
+Just build images
+
+```bash
+sh scripts/build.sh stack/php/7.3/Dockerfile.fpm --build
 ```
 
-This will build the image `{username}/php71:fpm`
+This will build the image `{username}/php:7.3-fpm`
 Using a path is possible too;
 
-```
-sh scripts/build.sh stack/php71 --build --push
+```bash
+sh scripts/build.sh stack/php/7.3 --build
 ```
 
 This will scan the directory for any `Dockerfile*`'s and will ask you to continue or not.
+
+## Pushing images
+
+Before you can push images, you have to login in Docker. This can be achieved by using `docker login`. Even on your own registry.
+
+## Change vendor name
+
+If you want to change my name into your own you can easily configure it in the projects root `.env` file like this;
+
+```bash
+DOCKER_USERNAME=yourname
+```

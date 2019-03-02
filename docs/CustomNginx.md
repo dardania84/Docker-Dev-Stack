@@ -12,7 +12,7 @@ This folder is used to put your custom configurations in for NginX.
 
 ## Using environment variables
 
-My images are built with a parser for environment variables inside the NginX configuration files. This is not possible by default.
+> My images are built with a parser for environment variables inside the NginX configuration files. This is not possible by default.
 
 If you're using `filename.placeholder` instead of `filename.conf`, inside the container path `/etc/nginx/conf.d/`, the NginX image is going to scan those files files and converts them into `filename.conf` with parsed environment variables.
 
