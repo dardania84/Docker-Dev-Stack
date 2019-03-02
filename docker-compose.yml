@@ -119,13 +119,14 @@ services:
       - development
 
   mysql:
-    image: ${DOCKER_USERNAME:-bertoost}/mysql:5.7
+    image: ${DOCKER_USERNAME:-bertoost}/mysql:${MYSQL_VERSION:-5.7}
     container_name: mysql
     restart: always
     ports:
       - "${MYSQL_PORT:-3306}:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      TZ: ${MYSQL_TIMEZONE:-Europe/Amsterdam}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD:-mysql}
     volumes:
       - ./data/mysql:/var/lib/mysql:rw
       - ./logs/mysql:/var/log/mysql
