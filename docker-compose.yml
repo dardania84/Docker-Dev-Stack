@@ -47,7 +47,7 @@ services:
       - webgateway
 
   php71:
-    image: ${DOCKER_USERNAME:-bertoost}/php71:fpm-development
+    image: ${DOCKER_USERNAME:-bertoost}/php:7.1-fpm-dev
     container_name: php71
     restart: always
     volumes:
@@ -67,7 +67,7 @@ services:
       - development
 
   php72:
-    image: ${DOCKER_USERNAME:-bertoost}/php72:fpm-development
+    image: ${DOCKER_USERNAME:-bertoost}/php:7.2-fpm-dev
     container_name: php72
     restart: always
     volumes:
@@ -93,7 +93,7 @@ services:
       - development
 
   php73:
-    image: ${DOCKER_USERNAME:-bertoost}/php73:fpm-development
+    image: ${DOCKER_USERNAME:-bertoost}/php:7.3-fpm-dev
     container_name: php73
     restart: always
     volumes:
