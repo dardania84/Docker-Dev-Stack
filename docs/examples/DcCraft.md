@@ -28,9 +28,9 @@ services:
 
   php:
     # Using PHP7.2
-    image: bertoost/php72:fpm-development
+    image: bertoost/php:7.2-fpm-dev
     # OR Using PHP7.3
-    image: bertoost/php73:fpm-development
+    image: bertoost/php:7.3-fpm-dev
     restart: always
     environment:
       CURRENT_ENV: ${DEV_CURRENT_ENV-development}
