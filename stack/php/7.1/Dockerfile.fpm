@@ -116,7 +116,12 @@ RUN chmod +x /home/php/composer.sh \
 COPY conf.d/php.ini /usr/local/etc/php/conf.d/00-php.ini
 COPY conf.d/fpm-pool.conf /usr/local/etc/php-fpm.d/www.conf
 
+# Custom entrypoint
+COPY scripts/entrypoint.sh /home/php/entrypoint.sh
+RUN chown php:php /home/php/entrypoint.sh \
+    && chmod +x /home/php/entrypoint.sh
+
 # Run commands inside this container as the created PHP user.
 USER php
 
-CMD ["php-fpm"]
+ENTRYPOINT ["/home/php/entrypoint.sh"]

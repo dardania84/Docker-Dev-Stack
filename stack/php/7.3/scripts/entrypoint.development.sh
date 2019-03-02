@@ -10,5 +10,8 @@ if [[ "${BINARY_DIRECTORY}" != "" ]]; then
     find /var/www/html/${BINARY_DIRECTORY} -type f -exec sed -i "s/CONTAINER_ID/${HOSTNAME}/" {} \;
 fi
 
+# Update composer at startup
+composer self-update
+
 # Run PHP-FPM at last
 php-fpm
