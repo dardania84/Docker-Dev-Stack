@@ -1,4 +1,4 @@
-FROM nginx:stable-alpine
+FROM nginx:1.15.9-alpine
 LABEL maintainer="Bert Oost <hello@bertoost.com>"
 
 RUN apk add --no-cache bash gawk sed grep bc coreutils \

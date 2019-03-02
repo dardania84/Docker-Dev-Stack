@@ -1,4 +1,4 @@
-FROM bertoost/nginx:symfony
+FROM bertoost/nginx:1.15.9-symfony
 LABEL maintainer Bert Oost <hello@bertoost.com>
 
 # Remove any parent placeholder files from NginX config
