@@ -21,7 +21,7 @@ services:
       - webgateway
 
   nginx:
-    image: ${DOCKER_USERNAME:-bertoost}/nginx:1.15-dev
+    image: ${DOCKER_USERNAME:-bertoost}/nginx:1-dev
     container_name: nginx
     restart: always
     links:
@@ -119,7 +119,7 @@ services:
       - development
 
   mysql:
-    image: ${DOCKER_USERNAME:-bertoost}/mysql:latest
+    image: ${DOCKER_USERNAME:-bertoost}/mysql:5.7
     container_name: mysql
     restart: always
     ports:
