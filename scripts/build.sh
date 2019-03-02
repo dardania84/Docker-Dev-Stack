@@ -81,7 +81,7 @@ parse_dockerfile()
     TYPE=$(echo ${TYPE} | sed -e "s/Dockerfile\.//g")
     TYPE=$(echo ${TYPE} | sed -e "s/\./-/g")
     if [[ "${TYPE}" = "Dockerfile" ]]; then
-        TAG="latest"
+        TYPE="latest"
     fi
 
     # create first tag (full)
