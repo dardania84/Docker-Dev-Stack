@@ -21,7 +21,7 @@ services:
       - webgateway
 
   nginx:
-    image: ${DOCKER_USERNAME:-bertoost}/nginx:dev
+    image: ${DOCKER_USERNAME:-bertoost}/nginx:1.15-dev
     container_name: nginx
     restart: always
     links:
