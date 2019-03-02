@@ -14,10 +14,10 @@ Option    | Description
 __Example usage__
 
 ```
-sh scripts/build.sh stack/php71/Dockerfile.fpm --build --push
+sh scripts/build.sh stack/php/7.3/Dockerfile.fpm --build --push
 ```
 
-This will build the image `{username}/php71:fpm`
+This will build the image `{username}/php:7.3-fpm`
 Using a path is possible too;
 
 ```
