@@ -1,14 +1,32 @@
 #!/bin/sh
 
-read -p "Are you sure you want to migrate to MySQL 8? [y/N] " CONTINUE
+echo ""
+echo "What I'm going to do for you..."
+echo ""
+echo "  > Checking & bringing up both MySQL versions"
+echo "  > Ensuring I can connect to both MySQL containers"
+echo "  > Backing up the current data from MySQL"
+echo "  > Creating necessary directories (for storing dumps)"
+echo "  > Selecting all (non-default) databases from the old MySQL container"
+echo "  > Dumping all databases into separated SQL files"
+echo "  > Importing databases into the new MySQL container"
+echo "  > Cleaning up dump directories in MySQL containers"
+echo "  > Renaming MySQL data directories"
+echo "  > Configuring the Dev Stack to use MySQL 8 container (via .env file)"
+echo "  > Switching your MySQL containers and cleaning temporary containers"
+echo ""
+echo "Quite a lot right? Yeah! But no worries, It's what I do for you..."
+echo ""
+
+read -p "Do you want to continue and migrate to MySQL 8? [y/N] " CONTINUE
 
 if [[ ! ${CONTINUE} =~ ^[Yy]$ ]]; then
-    echo "Exiting..."
+    echo "Okay! No problem. I'll stop..."
     exit 0
 fi
 
 echo ""
-echo "Okay! Here we go..."
+echo "All aboard! Here we go..."
 
 
 # Check if both services are running
