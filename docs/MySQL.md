@@ -40,17 +40,18 @@ If you're upgrading from 5.7 to 8.0, it's important to migrate. Since it's not a
 I have done the manual steps for you inside a helper script. You can easily start migrating with this script.
 
 ```bash
-# 1. Initialize the migration by starting up the new version
-sh scripts/helpers/mysql8-upgrade.sh --init
-
-# 2. Migrate databases by using your favorite tool (see manual step 6 & 7)
-#    (I wanted to automate this, but it's not yet there)
-
-# 3. Finalize the migration
-sh scripts/helpers/mysql8-upgrade.sh --finalize
+sh scripts/helpers/mysql8-upgrade.sh
 ```
 
 Now you should be able to connect to `localhost:3306` and see your new MySQL version and your migrated databases.
+
+This is how it will look like;
+
+<p align="center">
+    <a href="images/mysql8-upgrade-console.png">
+        <img src="images/mysql8-upgrade-console.png" alt="mysql8-console-example"  width="300">
+    </a>
+</p>
 
 #### Manual steps
 
