@@ -1,4 +1,5 @@
-#!/usr/bin/env bash
+#!/bin/bash
+
 options=$(ls -1 /usr/local/lib/php/extensions/no-debug-non-zts-20160303| \
 
     grep --invert-match xdebug| \
@@ -13,4 +14,4 @@ options=$(ls -1 /usr/local/lib/php/extensions/no-debug-non-zts-20160303| \
 )
 
 # build the final command line
-/usr/local/bin/php --no-php-ini -d date.timezone=Europe/Amsterdam -d memory_limit=-1 -d sendmail_path="/usr/sbin/ssmtp -t" $options /usr/local/bin/composer.phar $*
+/usr/local/bin/php --no-php-ini -d date.timezone=Europe/Amsterdam -d memory_limit=-1 -d sendmail_path="/usr/sbin/ssmtp -t" $options /usr/local/bin/composer $*

@@ -98,7 +98,8 @@ COPY conf.d/ssmtp.conf /etc/ssmtp/ssmtp.conf
 # Composer
 RUN curl -sS https://getcomposer.org/installer | php -d memory_limit=-1 -- \
     --install-dir=/usr/local/bin \
-    --filename=composer.phar
+    --filename=composer \
+    && chmod +x /usr/local/bin/composer
 
 # Add composer and php scripts for aliases.
 COPY home/ /home/php/
