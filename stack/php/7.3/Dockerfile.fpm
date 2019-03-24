@@ -104,7 +104,9 @@ RUN curl -sS https://getcomposer.org/installer | php -d memory_limit=-1 -- \
 COPY home/ /home/php/
 RUN chmod +x /home/php/composer.sh \
     && chmod +x /home/php/php.sh \
-    && chown php:php /home/php/php.sh /home/php/composer.sh
+    && chown php:php /home/php/php.sh /home/php/composer.sh \
+    && echo "alias php=/home/php/php.sh" >> /home/php/.bashrc \
+    && echo "alias composer=/home/php/composer.sh" >> /home/php/.bashrc
 
 # Custom entrypoint
 COPY scripts/entrypoint.sh /home/php/entrypoint.sh

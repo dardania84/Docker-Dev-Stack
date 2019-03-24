@@ -110,7 +110,9 @@ RUN apt-get purge -y --auto-remove \
 COPY home/ /home/php/
 RUN chmod +x /home/php/composer.sh \
     && chmod +x /home/php/php.sh \
-    && chown php:php /home/php/php.sh /home/php/composer.sh
+    && chown php:php /home/php/php.sh /home/php/composer.sh \
+    && echo "alias php=/home/php/php.sh" >> /home/php/.bashrc \
+    && echo "alias composer=/home/php/composer.sh" >> /home/php/.bashrc
 
 # php.ini
 COPY conf.d/php.ini /usr/local/etc/php/conf.d/00-php.ini
