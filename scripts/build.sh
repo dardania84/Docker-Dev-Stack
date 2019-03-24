@@ -5,6 +5,7 @@ DOCKERFILE=""
 DO_BUILD=false
 DO_PUSH=false
 DO_FORCED=false
+IS_LATEST=false
 
 ENVFILE=$EXECUTEDIR/.env
 if [ -f $ENVFILE ]; then
@@ -30,6 +31,9 @@ while [ "$1" != "" ]; do
             ;;
         --force)
             DO_FORCED=true
+            ;;
+        --latest)
+            IS_LATEST=true
             ;;
         *)
             if [[ "$PARAM" == *"Dockerfile"* ]] || [ -d "$PARAM" ]; then
@@ -113,19 +117,27 @@ parse_dockerfile()
             sed -i "s/FROM bertoost/FROM ${DOCKER_USERNAME}/g" ${DOCKERFILE_RELATIVE}.working
 
             # build working file
-            if [[ "${TAG_LATEST}" != "" ]]; then
-                docker build -f "${DOCKERFILE_RELATIVE}.working" -t "${TAG_LONG}" -t "${TAG_MEDIUM}" -t "${TAG_SHORT}" -t "${TAG_LATEST}" .
+            if [[ "$IS_LATEST" = true ]]; then
+                if [[ "${TAG_LATEST}" != "" ]]; then
+                    docker build -f "${DOCKERFILE_RELATIVE}.working" -t "${TAG_LONG}" -t "${TAG_MEDIUM}" -t "${TAG_SHORT}" -t "${TAG_LATEST}" .
+                else
+                    docker build -f "${DOCKERFILE_RELATIVE}.working" -t "${TAG_LONG}" -t "${TAG_MEDIUM}" -t "${TAG_SHORT}" .
+                fi
             else
-                docker build -f "${DOCKERFILE_RELATIVE}.working" -t "${TAG_LONG}" -t "${TAG_MEDIUM}" -t "${TAG_SHORT}" .
+                docker build -f "${DOCKERFILE_RELATIVE}.working" -t "${TAG_LONG}" -t "${TAG_MEDIUM}" .
             fi
 
             rm -f ${DOCKERFILE_RELATIVE}.working;
         else
             # build docker file
-            if [[ "${TAG_LATEST}" != "" ]]; then
-                docker build -f "${DOCKERFILE_RELATIVE}" -t "${TAG_LONG}" -t "${TAG_MEDIUM}" -t "${TAG_SHORT}" -t "${TAG_LATEST}" .
+            if [[ "$IS_LATEST" = true ]]; then
+                if [[ "${TAG_LATEST}" != "" ]]; then
+                    docker build -f "${DOCKERFILE_RELATIVE}" -t "${TAG_LONG}" -t "${TAG_MEDIUM}" -t "${TAG_SHORT}" -t "${TAG_LATEST}" .
+                else
+                    docker build -f "${DOCKERFILE_RELATIVE}" -t "${TAG_LONG}" -t "${TAG_MEDIUM}" -t "${TAG_SHORT}" .
+                fi
             else
-                docker build -f "${DOCKERFILE_RELATIVE}" -t "${TAG_LONG}" -t "${TAG_MEDIUM}" -t "${TAG_SHORT}" .
+                docker build -f "${DOCKERFILE_RELATIVE}" -t "${TAG_LONG}" -t "${TAG_MEDIUM}" .
             fi
         fi
     fi
@@ -133,10 +145,13 @@ parse_dockerfile()
     if [[ "$DO_PUSH" = true ]]; then
         docker push "${TAG_LONG}"
         docker push "${TAG_MEDIUM}"
-        docker push "${TAG_SHORT}"
 
-        if [[ "${TAG_LATEST}" != "" ]]; then
-            docker push "${TAG_LATEST}"
+        if [[ "$IS_LATEST" = true ]]; then
+            docker push "${TAG_SHORT}"
+
+            if [[ "${TAG_LATEST}" != "" ]]; then
+                docker push "${TAG_LATEST}"
+            fi
         fi
     fi
 

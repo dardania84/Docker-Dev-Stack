@@ -61,3 +61,4 @@ USER php
 ENV BINARY_DIRECTORY "bin/"
 
 ENTRYPOINT ["/home/php/entrypoint.sh"]
+CMD ["php-fpm"]

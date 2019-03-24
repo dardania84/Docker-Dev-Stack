@@ -121,3 +121,4 @@ ENV PHP_POST_MAX_SIZE=128M
 ENV PHP_UPLOAD_MAX_FILESIZE=128M
 
 ENTRYPOINT ["/home/php/entrypoint.sh"]
+CMD ["php-fpm"]
