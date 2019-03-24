@@ -99,7 +99,10 @@ RUN echo "extension=yaml.so" > /usr/local/etc/php/conf.d/pecl-yaml.ini \
     && echo "extension=sodium.so" > /usr/local/etc/php/conf.d/pecl-sodium.ini
 
 # Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer.phar
+RUN curl -sS https://getcomposer.org/installer | php -d memory_limit=-1 -- \
+    --install-dir=/usr/local/bin \
+    --filename=composer \
+    && chmod +x /usr/local/bin/composer
 
 # Remove temporary stuff
 RUN apt-get purge -y --auto-remove \
@@ -110,7 +113,9 @@ RUN apt-get purge -y --auto-remove \
 COPY home/ /home/php/
 RUN chmod +x /home/php/composer.sh \
     && chmod +x /home/php/php.sh \
-    && chown php:php /home/php/php.sh /home/php/composer.sh
+    && chown php:php /home/php/php.sh /home/php/composer.sh \
+    && echo "alias php=/home/php/php.sh" >> /home/php/.bashrc \
+    && echo "alias composer=/home/php/composer.sh" >> /home/php/.bashrc
 
 # php.ini
 COPY conf.d/php.ini /usr/local/etc/php/conf.d/00-php.ini
