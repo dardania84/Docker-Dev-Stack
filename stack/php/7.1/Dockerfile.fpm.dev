@@ -49,4 +49,7 @@ USER php
 
 ENV BINARY_DIRECTORY "bin/"
 
+WORKDIR /var/www/html
+
 ENTRYPOINT ["/home/php/entrypoint.sh"]
+CMD [ "php-fpm" ]

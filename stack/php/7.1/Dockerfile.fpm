@@ -129,4 +129,7 @@ RUN chown php:php /home/php/entrypoint.sh \
 # Run commands inside this container as the created PHP user.
 USER php
 
+WORKDIR /var/www/html
+
 ENTRYPOINT ["/home/php/entrypoint.sh"]
+CMD [ "php-fpm" ]
