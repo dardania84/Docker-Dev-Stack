@@ -10,9 +10,6 @@ if [[ "${BINARY_DIRECTORY}" != "" ]]; then
     find /var/www/html/${BINARY_DIRECTORY} -type f -exec sed -i "s/CONTAINER_ID/${HOSTNAME}/" {} \;
 fi
 
-# Update composer at startup
-composer self-update
-
 # check if there was a command passed
 # required by Jenkins Docker plugin: https://github.com/docker-library/official-images#consistency
 if [ "$1" ]; then

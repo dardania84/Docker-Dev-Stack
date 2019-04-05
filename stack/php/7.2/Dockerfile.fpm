@@ -109,6 +109,11 @@ RUN chmod +x /home/php/composer.sh \
     && echo "alias php=/home/php/php.sh" >> /home/php/.bashrc \
     && echo "alias composer=/home/php/composer.sh" >> /home/php/.bashrc
 
+# Custom entrypoint
+COPY scripts/entrypoint.sh /home/php/entrypoint.sh
+RUN chown php:php /home/php/entrypoint.sh \
+    && chmod +x /home/php/entrypoint.sh
+
 # Run commands inside this container as the created PHP user.
 USER php
 
@@ -118,4 +123,7 @@ ENV PHP_MEMORY_LIMIT=256M
 ENV PHP_POST_MAX_SIZE=128M
 ENV PHP_UPLOAD_MAX_FILESIZE=128M
 
+WORKDIR /var/www/html
+
+ENTRYPOINT ["/home/php/entrypoint.sh"]
 CMD ["php-fpm"]
