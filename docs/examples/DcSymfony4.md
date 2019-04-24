@@ -50,9 +50,6 @@ services:
     volumes:
       - './:/var/www/html:rw'
       - '${DEV_COMPOSER_DATA-~/.composer}:/home/php/.composer'
-    external_links:
-      - ${DEV_MYSQL_CONTAINERNAME-mysql}:mysql
-      - ${DEV_MAIL_CONTAINERNAME-postoffice}:mail.docker.local
     networks:
       - development
 
