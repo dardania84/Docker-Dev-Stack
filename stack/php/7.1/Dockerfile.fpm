@@ -14,9 +14,6 @@ RUN adduser \
 RUN mkdir -p /var/www/html \
     && chown php:php /var/www/html
 
-# SSMTP config.
-COPY conf.d/ssmtp.conf /etc/ssmtp/ssmtp.conf
-
 # Install modules
 RUN apt-get update \
     && apt-get install -y \
@@ -120,6 +117,13 @@ RUN chmod +x /home/php/composer.sh \
 # php.ini
 COPY conf.d/php.ini /usr/local/etc/php/conf.d/00-php.ini
 COPY conf.d/fpm-pool.conf /usr/local/etc/php-fpm.d/www.conf
+
+# SSMTP config.
+COPY conf.d/ssmtp.conf /etc/ssmtp/ssmtp.conf.placeholder
+RUN rm -rf /etc/ssmtp/ssmtp.conf \
+    && touch /etc/ssmtp/ssmtp.conf \
+    && chown php:php /etc/ssmtp/ssmtp.conf \
+    && chown php:php /etc/ssmtp/ssmtp.conf.placeholder
 
 # Custom entrypoint
 COPY scripts/entrypoint.sh /home/php/entrypoint.sh

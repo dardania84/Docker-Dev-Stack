@@ -10,6 +10,11 @@ if [[ "${BINARY_DIRECTORY}" != "" ]]; then
     find /var/www/html/${BINARY_DIRECTORY} -type f -exec sed -i "s/CONTAINER_ID/${HOSTNAME}/" {} \;
 fi
 
+# sSMTP environment variables support
+SSMTP_SERVER="${SSMTP_SERVER:-postoffice}" \
+SSMTP_PORT="${SSMTP_PORT:-1025}" \
+envsubst < "/etc/ssmtp/ssmtp.conf.placeholder" > "/etc/ssmtp/ssmtp.conf"
+
 # check if there was a command passed
 # required by Jenkins Docker plugin: https://github.com/docker-library/official-images#consistency
 if [ "$1" ]; then
