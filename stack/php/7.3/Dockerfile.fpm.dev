@@ -53,13 +53,6 @@ COPY scripts/entrypoint.development.sh /home/php/entrypoint.sh
 RUN chown php:php /home/php/entrypoint.sh \
     && chmod +x /home/php/entrypoint.sh
 
-# SSMTP config.
-COPY conf.d/ssmtp.development.conf /etc/ssmtp/ssmtp.conf.placeholder
-RUN rm -rf /etc/ssmtp/ssmtp.conf \
-    && touch /etc/ssmtp/ssmtp.conf \
-    && chown php:php /etc/ssmtp/ssmtp.conf \
-    && chown php:php /etc/ssmtp/ssmtp.conf.placeholder
-
 USER php
 
 ENV BINARY_DIRECTORY "bin/"

@@ -13,6 +13,8 @@ fi
 # sSMTP environment variables support
 SSMTP_SERVER="${SSMTP_SERVER:-postoffice}" \
 SSMTP_PORT="${SSMTP_PORT:-1025}" \
+SSMTP_USETLS="${SSMTP_USETLS:-NO}" \
+SSMTP_USESTARTTLS="${SSMTP_USESTARTTLS:-NO}" \
 envsubst < "/etc/ssmtp/ssmtp.conf.placeholder" > "/etc/ssmtp/ssmtp.conf"
 
 # check if there was a command passed

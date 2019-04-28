@@ -48,13 +48,6 @@ RUN mkdir -p /home/php/projects_bin \
 COPY projects_bin/* /home/php/projects_bin/
 RUN chown php:php /home/php/projects_bin/*
 
-# SSMTP config.
-COPY conf.d/ssmtp.development.conf /etc/ssmtp/ssmtp.conf.placeholder
-RUN rm -rf /etc/ssmtp/ssmtp.conf \
-    && touch /etc/ssmtp/ssmtp.conf \
-    && chown php:php /etc/ssmtp/ssmtp.conf \
-    && chown php:php /etc/ssmtp/ssmtp.conf.placeholder
-
 # Custom entrypoint
 COPY scripts/entrypoint.development.sh /home/php/entrypoint.sh
 RUN chown php:php /home/php/entrypoint.sh \

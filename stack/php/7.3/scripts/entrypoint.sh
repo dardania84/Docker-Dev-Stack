@@ -3,6 +3,8 @@
 # sSMTP environment variables support
 SSMTP_SERVER="${SSMTP_SERVER:-mail.docker.local}" \
 SSMTP_PORT="${SSMTP_PORT:-25}" \
+SSMTP_USETLS="${SSMTP_USETLS:-YES}" \
+SSMTP_USESTARTTLS="${SSMTP_USESTARTTLS:-YES}" \
 envsubst < "/etc/ssmtp/ssmtp.conf.placeholder" > "/etc/ssmtp/ssmtp.conf"
 
 # check if there was a command passed
