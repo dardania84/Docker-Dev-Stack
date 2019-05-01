@@ -42,9 +42,6 @@ COPY scripts/entrypoint.development.sh /home/php/entrypoint.sh
 RUN chown php:php /home/php/entrypoint.sh \
     && chmod +x /home/php/entrypoint.sh
 
-# SSMTP config.
-COPY conf.d/ssmtp.development.conf /etc/ssmtp/ssmtp.conf
-
 USER php
 
 ENV BINARY_DIRECTORY "bin/"

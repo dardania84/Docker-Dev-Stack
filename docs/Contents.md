@@ -36,3 +36,14 @@ You're able to change some `php.ini` behavior settings by creating environment v
 | PHP_UPLOAD_MAX_FILESIZE | 128M             | The max filesize for uploading files       |
 
 > __Note:__ not implemented in PHP7.1 image. Since that image will not be activily maintained anymore.
+
+## sSMTP environment variables
+
+All my PHP images containing a package called sSMTP do deliver emails. This can be catched by a local development mail-catcher (like Mailhog, see root's `docker-compose.yml` file) or a real world smtp server. These variables can be set;
+
+| Image           | Name         | Default value     | Description               |
+|-----------------|--------------|-------------------|---------------------------|
+| `php:*-fpm`     | SSMTP_SERVER | mail.docker.local | The smtp mailserver host  |
+| `php:*-fpm-dev` | SSMTP_SERVER | postoffice        |                           |
+| `php:*-fpm`     | SSMTP_PORT   | 25                | The ssmtp mailserver port |
+| `php:*-fpm-dev` | SSMTP_PORT   | 1025              |                           |
