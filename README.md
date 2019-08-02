@@ -25,4 +25,3 @@ For advanced users
 - [Custom NginX Config](docs/CustomNginx.md)
   - [Configuration folder](docs/CustomNginx.md#configuration-folder)
   - [Environment variables](docs/CustomNginx.md#using-environment-variables)
-- [Building images](docs/BuildImages.md)
