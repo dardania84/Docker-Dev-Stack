@@ -2,21 +2,27 @@
 version: "3.3"
 services:
   traefik:
-    image: traefik:v1.7
+    image: traefik:v2.0
     container_name: traefik
     restart: always
-    command: "--web --docker --docker.domain=${DEV_HOST_DOMAIN} --docker.watch=true --docker.exposedbydefault=false --logLevel=DEBUG"
+    command: >
+      --log.level=DEBUG
+      --api.insecure=true
+      --providers.docker=true
+      --providers.docker.watch=true
+      --providers.docker.exposedbydefault=false
+      --entrypoints.http.address=:${TRAEFIK_PORT_HTTP:-80}
+      --entrypoints.https.address=:${TRAEFIK_PORT_HTTPS:-443}
     ports:
       - "${TRAEFIK_PORT_HTTP:-80}:80"
       - "${TRAEFIK_PORT_HTTPS:-443}:443"
     labels:
       traefik.enable: 'true'
-      traefik.port: '8080'
-      traefik.frontend.rule: 'Host:traefik.${DEV_HOST_DOMAIN}'
       traefik.docker.network: 'webgateway'
+      traefik.http.routers.traefik.rule: "Host(`traefik.${DEV_HOST_DOMAIN:-local}`)"
+      traefik.http.services.traefik.loadbalancer.server.port: 8080
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /dev/null:/traefik.toml
     networks:
       - webgateway
 
@@ -34,11 +40,11 @@ services:
       - ${PROJECTS_DIR-./projects}:/var/www/html
     labels:
       traefik.enable: 'true'
-      traefik.frontend.rule: 'PathPrefix:/'
-      traefik.frontend.priority: '1'
       traefik.docker.network: 'webgateway'
+      traefik.http.routers.router0.rule: "PathPrefix(`/`)"
+      traefik.http.routers.router0.priority: 1
     environment:
-      DEV_HOST_DOMAIN: ${DEV_HOST_DOMAIN}
+      DEV_HOST_DOMAIN: ${DEV_HOST_DOMAIN:-local}
       DEV_HOST_IP: ${DEV_HOST_IP}
     env_file:
       - .env
@@ -144,9 +150,9 @@ services:
       - '25:1025'
     labels:
       traefik.enable: 'true'
-      traefik.port: '8025'
-      traefik.frontend.rule: 'Host:postoffice.${DEV_HOST_DOMAIN}'
       traefik.docker.network: 'webgateway'
+      traefik.http.routers.postoffice.rule: "Host(`postoffice.${DEV_HOST_DOMAIN:-local}`)"
+      traefik.http.services.postoffice.loadbalancer.server.port: 8025
     networks:
       - development
       - webgateway
@@ -161,9 +167,9 @@ services:
       - './data/portainer:/data'
     labels:
       traefik.enable: 'true'
-      traefik.port: '9000'
-      traefik.frontend.rule: 'Host:portainer.${DEV_HOST_DOMAIN}'
       traefik.docker.network: 'webgateway'
+      traefik.http.routers.portainer.rule: "Host(`portainer.${DEV_HOST_DOMAIN:-local}`)"
+      traefik.http.services.portainer.loadbalancer.server.port: 9000
     networks:
       - development
       - webgateway
