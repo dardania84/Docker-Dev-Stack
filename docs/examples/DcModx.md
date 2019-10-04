@@ -5,10 +5,10 @@ Below an exmaple of the `docker-compose.yml` file using the MODX CMS NginX image
 Put this file in the root of your project (checkout);
 
 ```yaml
-version: "3.3"
+version: "3.7"
 services:
   nginx:
-    image: bertoost/nginx:modx
+    image: bertoost/nginx:1.17-modx
     restart: always
     links:
       - php:php
@@ -16,12 +16,8 @@ services:
       - ".:/var/www/html:rw"
     labels:
       traefik.enable: 'true'
-      traefik.port: '80'
-      # Tell Traefik which domain should be mapped
-      traefik.frontend.rule: 'Host:my-modx-project.local'
-      # You can also use environment variables here (or a .env file)
-      # traefik.frontend.rule: 'Host:my-modx-project.${DEV_HOST_DOMAIN}'
       traefik.docker.network: 'webgateway'
+      traefik.http.routers.traefik.rule: "Host(`my-modx-project.${DEV_HOST_DOMAIN:-local}`)"
     networks:
       - development
       - webgateway

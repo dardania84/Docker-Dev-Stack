@@ -5,10 +5,10 @@ Below an exmaple of the `docker-compose.yml` file using the Symfony (development
 Put this file in the root of your project (checkout);
 
 ```yaml
-version: "3.3"
+version: "3.7"
 services:
   nginx:
-    image: bertoost/nginx:symfony-development
+    image: bertoost/nginx:1.17-symfony-development
     restart: always
     links:
       - php:php
@@ -16,12 +16,8 @@ services:
       - ".:/var/www/html:rw"
     labels:
       traefik.enable: 'true'
-      traefik.port: '80'
-      # Tell Traefik which domain should be mapped
-      traefik.frontend.rule: 'Host:my-symfony-project.local'
-      # You can also use environment variables here (or a .env file)
-      # traefik.frontend.rule: 'Host:my-symfony-project.${DEV_HOST_DOMAIN}'
       traefik.docker.network: 'webgateway'
+      traefik.http.routers.traefik.rule: "Host(`my-symfony-project.${DEV_HOST_DOMAIN:-local}`)"
     networks:
       - development
       - webgateway
