@@ -7,7 +7,7 @@ The stack contains a setup for the next Docker services;
   - Symfony configuration (not with tested v4.0 yet)
   - Craft CMS projects
   - MODX CMS projects
-- PHP 7.2.x / 7.3.x (FPM)
+- PHP 7.3.x / 7.4.x (FPM)
   - Libraries included:
     - Locales: en_US and nl_NL supported (currently)
     - ImageMagic
@@ -23,7 +23,7 @@ The stack contains a setup for the next Docker services;
 - Mailhog (catching mail)
 - Portainer (UI for your Docker setup)
 
-## PHP 7.2 & PHP 7.3 customizations
+## PHP 7.3 & PHP 7.4 customizations
 
 You're able to change some `php.ini` behavior settings by creating environment variables inside your .env file.
 
