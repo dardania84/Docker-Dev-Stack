@@ -1,5 +1,5 @@
 # Author: Bert Oost <hello@bertoost.com>
-version: "3.3"
+version: "3.7"
 services:
   traefik:
     image: traefik:v2.0
@@ -31,9 +31,8 @@ services:
     container_name: nginx
     restart: always
     links:
-      - php71:php71
-      - php72:php72
       - php73:php73
+      - php74:php74
     volumes:
       - ./logs/nginx:/var/log/nginx
       - ./data/nginx:/etc/nginx/conf.d/custom
@@ -52,32 +51,12 @@ services:
       - development
       - webgateway
 
-  php71:
-    image: ${DOCKER_USERNAME:-bertoost}/php:7.1-fpm-dev
-    container_name: php71
+  php73:
+    image: ${DOCKER_USERNAME:-bertoost}/php:7.3-fpm-dev
+    container_name: php73
     restart: always
     volumes:
-      - ./logs/php71:/var/log/php71
-      - ./data/composer:/home/php/.composer
-      - ${PROJECTS_DIR-./projects}:/var/www/html
-    links:
-      - mysql
-      - ${DEV_MAIL_CONTAINERNAME-postoffice}:mail.docker.local
-    environment:
-      BINARY_DIRECTORY: ''
-      XDEBUG_HOST: ${DEV_HOST_DOMAIN}
-      BLACKFIRE_HOST: ${DEV_HOST_DOMAIN}
-    env_file:
-      - .env
-    networks:
-      - development
-
-  php72:
-    image: ${DOCKER_USERNAME:-bertoost}/php:7.2-fpm-dev
-    container_name: php72
-    restart: always
-    volumes:
-      - ./logs/php72:/var/log/php
+      - ./logs/php73:/var/log/php
       - ./data/composer:/home/php/.composer
       - ${PROJECTS_DIR-./projects}:/var/www/html
     links:
@@ -98,12 +77,12 @@ services:
     networks:
       - development
 
-  php73:
-    image: ${DOCKER_USERNAME:-bertoost}/php:7.3-fpm-dev
-    container_name: php73
+  php74:
+    image: ${DOCKER_USERNAME:-bertoost}/php:7.4-fpm-dev
+    container_name: php74
     restart: always
     volumes:
-      - ./logs/php73:/var/log/php
+      - ./logs/php74:/var/log/php
       - ./data/composer:/home/php/.composer
       - ${PROJECTS_DIR-./projects}:/var/www/html
     links:

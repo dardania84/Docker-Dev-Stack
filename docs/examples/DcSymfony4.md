@@ -23,10 +23,10 @@ services:
       - webgateway
 
   php:
-    # Using PHP7.2
-    image: bertoost/php:7.2-fpm-dev
-    # OR Using PHP7.3
+    # Using PHP7.3
     image: bertoost/php:7.3-fpm-dev
+    # OR Using PHP7.4
+    image: bertoost/php:7.4-fpm-dev
     restart: always
     environment:
       CURRENT_ENV: ${DEV_CURRENT_ENV-development}

@@ -15,13 +15,13 @@ Traefik is configured to load this fallback as last (regarding custom project do
 The next URLs are leading to your projects-directory loaded via PHP7.2
 
 ```bash
-http://my-project.php72.{domain}
+http://my-project.php74.{domain}
 ```
 
 This next URLs are leading to your projects-directory loaded via PHP7.3
 
 ```bash
-http://my-project.php73.{domain}
+http://my-project.php74.{domain}
 ```
 
 > In above example the folder `my-project/` should exist in the projects-directory. The name of the directory inside the projects-directory is used as first part.
